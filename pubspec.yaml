@@ -1,0 +1,24 @@
+name: lightning_api_models
+description: Models for the Lightning API
+version: 0.0.1
+publish_to: none
+
+environment:
+  sdk: ">=2.12.0 <3.0.0"
+
+dependencies:
+  equatable: ^2.0.3
+  http: ^0.13.3
+  json_annotation: ^4.1.0
+  hive_bridge_api:
+    path: ../hive_bridge_api
+
+dev_dependencies:
+  test: ^1.17.12
+  build_runner: ^2.1.2
+  json_serializable: ^5.0.1
+  faker: ^2.0.0
+  # mockito: ^5.0.16
+  mocktail: ^0.1.4
+# For information on the generic Dart part of this file, see the
+# following page: https://dart.dev/tools/pub/pubspec
