@@ -1,7 +1,7 @@
 import 'dart:convert';
 import 'dart:io';
 
-import 'package:lightning_api_models/lightning_api_models.dart';
+import 'package:lightning_api/lightning_api.dart';
 
 Future<JsonMetadata> fakeJsonMetadata() async =>
     File('test/helpers/fake_content.json')
@@ -9,7 +9,7 @@ Future<JsonMetadata> fakeJsonMetadata() async =>
         .then(jsonDecode)
         .then((json) => JsonMetadata.fromJson(json["json_metadata"]));
 
-Future<Content> fakePost() async => File('test/helpers/fake_content.json')
+Future<Content> fakeContent() async => File('test/helpers/fake_content.json')
     .readAsString()
     .then(jsonDecode)
     .then((json) => Content.fromJson(json));

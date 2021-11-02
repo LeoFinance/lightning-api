@@ -43,8 +43,8 @@ class Content {
   final String url;
   final List<Beneficiary> beneficiaries;
   final String maxAcceptedPayout;
-  final String community;
-  final String communityTitle;
+  final String? community;
+  final String? communityTitle;
   final String authorperm;
   final int pendingToken;
   final int precision;
@@ -78,8 +78,8 @@ class Content {
       required this.url,
       required this.beneficiaries,
       required this.maxAcceptedPayout,
-      required this.community,
-      required this.communityTitle,
+      this.community,
+      this.communityTitle,
       required this.authorperm,
       required this.pendingToken,
       required this.precision,

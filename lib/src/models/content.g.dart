@@ -29,8 +29,8 @@ Content _$ContentFromJson(Map<String, dynamic> json) => Content(
           .map((e) => Beneficiary.fromJson(e as Map<String, dynamic>))
           .toList(),
       maxAcceptedPayout: json['max_accepted_payout'] as String,
-      community: json['community'] as String,
-      communityTitle: json['community_title'] as String,
+      community: json['community'] as String?,
+      communityTitle: json['community_title'] as String?,
       authorperm: json['authorperm'] as String,
       pendingToken: json['pending_token'] as int,
       precision: json['precision'] as int,

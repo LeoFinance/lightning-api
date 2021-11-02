@@ -1,14 +1,13 @@
 import 'dart:convert';
 import 'dart:io';
-import 'helpers/fakes.dart';
-import 'package:lightning_api_models/lightning_api_models.dart';
+import 'package:lightning_api/lightning_api.dart';
 import 'package:test/test.dart';
 
 void main() {
   group('Feed', () {
     group('fromJson', () {
       test('decodes from JSON', () async {
-        final json = await File('test/helpers/fake_feed.json')
+        final json = await File('test/samples/feed.json')
             .readAsString()
             .then(jsonDecode);
 
