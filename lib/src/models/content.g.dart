@@ -38,8 +38,9 @@ Content _$ContentFromJson(Map<String, dynamic> json) => Content(
       muted: json['muted'] as bool,
       upvotes: Map<String, String>.from(json['upvotes'] as Map),
       downvotes: Map<String, String>.from(json['downvotes'] as Map),
-      replies:
-          (json['replies'] as List<dynamic>).map((e) => e as String).toList(),
+      replies: (json['replies'] as List<dynamic>?)
+          ?.map((e) => Content.fromJson(e as Map<String, dynamic>))
+          .toList(),
       allComments: (json['allComments'] as List<dynamic>)
           .map((e) => e as String)
           .toList(),
@@ -74,6 +75,6 @@ Map<String, dynamic> _$ContentToJson(Content instance) => <String, dynamic>{
       'muted': instance.muted,
       'upvotes': instance.upvotes,
       'downvotes': instance.downvotes,
-      'replies': instance.replies,
+      'replies': instance.replies?.map((e) => e.toJson()).toList(),
       'allComments': instance.allComments,
     };

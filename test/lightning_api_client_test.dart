@@ -69,7 +69,7 @@ void main() {
                 .having((p) => p.author, 'author', 'cwow2')
                 .having(
                     (p) => p.permlink, 'permlink', 'selling-my-hive-goodbye')
-                .having((p) => p.upvotes, 'upvotes', hasLength(159))
+                .having((p) => p.upvotes, 'upvotes', hasLength(29))
                 .having((p) => p.downvotes, 'downvotes', hasLength(1)));
       });
     });

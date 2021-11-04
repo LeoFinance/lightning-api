@@ -1,10 +1,12 @@
+import 'package:equatable/equatable.dart';
 import 'package:json_annotation/json_annotation.dart';
+
 import 'models.dart';
 
 part 'content.g.dart';
 
 @JsonSerializable(fieldRename: FieldRename.snake, explicitToJson: true)
-class Content {
+class Content extends Equatable {
   final int postId;
 
   final String author;
@@ -53,7 +55,8 @@ class Content {
 
   final Map<String, String> upvotes;
   final Map<String, String> downvotes;
-  final List<String> replies;
+
+  final List<Content>? replies;
 
   @JsonKey(name: 'allComments')
   final List<String> allComments;
@@ -101,4 +104,36 @@ class Content {
   }
 
   Map<String, dynamic> toJson() => _$ContentToJson(this);
+
+  @override
+  List<Object?> get props => [
+        postId,
+        author,
+        permlink,
+        category,
+        title,
+        body,
+        jsonMetadata,
+        created,
+        updated,
+        depth,
+        children,
+        netRshares,
+        authorReputation,
+        stats,
+        url,
+        beneficiaries,
+        maxAcceptedPayout,
+        community,
+        communityTitle,
+        authorperm,
+        pendingToken,
+        precision,
+        token,
+        muted,
+        upvotes,
+        downvotes,
+        replies,
+        allComments
+      ];
 }
