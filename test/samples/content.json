@@ -17,7 +17,7 @@
   "created": "2021-10-30T08:36:42",
   "updated": "2021-10-30T08:36:42Z",
   "depth": 0,
-  "children": 8,
+  "children": 3,
   "net_rshares": 18469036724600,
   "is_paidout": false,
   "payout_at": "2021-11-06T08:36:42",
@@ -200,11 +200,9 @@
           "totalDownvoteRshares": 0,
           "upvotes": { "ykretz": "0.028" },
           "downvotes": {},
-          "replies": [],
-          "allComments": []
+          "replies": []
         }
-      ],
-      "allComments": ["@cwow2/re-ykretz-r1sc0t"]
+      ]
     },
     {
       "post_id": 107387653,
@@ -221,7 +219,7 @@
       "created": "2021-10-30T09:06:36",
       "updated": "2021-10-30T09:06:36Z",
       "depth": 1,
-      "children": 1,
+      "children": 0,
       "net_rshares": 0,
       "is_paidout": false,
       "payout_at": "2021-11-06T09:06:36",
@@ -263,13 +261,7 @@
       "totalDownvoteRshares": 0,
       "upvotes": {},
       "downvotes": {},
-      "replies": [],
-      "allComments": []
+      "replies": []
     }
-  ],
-  "allComments": [
-    "@ykretz/re-cwow2-r1s93r",
-    "@bhattg/re-cwow2-20211030t143647678z",
-    "@cwow2/re-ykretz-r1sc0t"
   ]
 }

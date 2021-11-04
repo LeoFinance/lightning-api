@@ -31,7 +31,6 @@ Content _$ContentFromJson(Map<String, dynamic> json) => Content(
       maxAcceptedPayout: json['max_accepted_payout'] as String,
       community: json['community'] as String?,
       communityTitle: json['community_title'] as String?,
-      authorperm: json['authorperm'] as String,
       pendingToken: json['pending_token'] as int,
       precision: json['precision'] as int,
       token: json['token'] as String,
@@ -40,9 +39,6 @@ Content _$ContentFromJson(Map<String, dynamic> json) => Content(
       downvotes: Map<String, String>.from(json['downvotes'] as Map),
       replies: (json['replies'] as List<dynamic>?)
           ?.map((e) => Content.fromJson(e as Map<String, dynamic>))
-          .toList(),
-      allComments: (json['allComments'] as List<dynamic>)
-          .map((e) => e as String)
           .toList(),
     );
 
@@ -68,7 +64,6 @@ Map<String, dynamic> _$ContentToJson(Content instance) => <String, dynamic>{
       'max_accepted_payout': instance.maxAcceptedPayout,
       'community': instance.community,
       'community_title': instance.communityTitle,
-      'authorperm': instance.authorperm,
       'pending_token': instance.pendingToken,
       'precision': instance.precision,
       'token': instance.token,
@@ -76,5 +71,4 @@ Map<String, dynamic> _$ContentToJson(Content instance) => <String, dynamic>{
       'upvotes': instance.upvotes,
       'downvotes': instance.downvotes,
       'replies': instance.replies?.map((e) => e.toJson()).toList(),
-      'allComments': instance.allComments,
     };

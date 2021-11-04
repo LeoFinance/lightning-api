@@ -36,6 +36,8 @@ class Content extends Equatable {
   final DateTime? updated;
 
   final int? depth;
+
+  /// The total number of replies in this subtree
   final int children;
 
   final int? netRshares;
@@ -47,7 +49,6 @@ class Content extends Equatable {
   final String maxAcceptedPayout;
   final String? community;
   final String? communityTitle;
-  final String authorperm;
   final int pendingToken;
   final int precision;
   final String token;
@@ -56,42 +57,43 @@ class Content extends Equatable {
   final Map<String, String> upvotes;
   final Map<String, String> downvotes;
 
+  // Holds the list of replies of this Comment if they have been loaded; if
+  // this is null, means that they were not loaded. If empty list, there are
+  // no replies.
   final List<Content>? replies;
 
-  @JsonKey(name: 'allComments')
-  final List<String> allComments;
+  Content({
+    required this.postId,
+    required this.author,
+    required this.permlink,
+    required this.category,
+    required this.title,
+    required this.body,
+    required this.parentAuthor,
+    required this.parentPermlink,
+    required this.jsonMetadata,
+    required this.created,
+    required this.updated,
+    required this.depth,
+    required this.children,
+    required this.netRshares,
+    required this.authorReputation,
+    required this.stats,
+    required this.url,
+    required this.beneficiaries,
+    required this.maxAcceptedPayout,
+    this.community,
+    this.communityTitle,
+    required this.pendingToken,
+    required this.precision,
+    required this.token,
+    required this.muted,
+    required this.upvotes,
+    required this.downvotes,
+    required this.replies,
+  });
 
-  Content(
-      {required this.postId,
-      required this.author,
-      required this.permlink,
-      required this.category,
-      required this.title,
-      required this.body,
-      required this.parentAuthor,
-      required this.parentPermlink,
-      required this.jsonMetadata,
-      required this.created,
-      required this.updated,
-      required this.depth,
-      required this.children,
-      required this.netRshares,
-      required this.authorReputation,
-      required this.stats,
-      required this.url,
-      required this.beneficiaries,
-      required this.maxAcceptedPayout,
-      this.community,
-      this.communityTitle,
-      required this.authorperm,
-      required this.pendingToken,
-      required this.precision,
-      required this.token,
-      required this.muted,
-      required this.upvotes,
-      required this.downvotes,
-      required this.replies,
-      required this.allComments});
+  String get authorperm => '@$author/$permlink';
 
   factory Content.fromJson(Map<String, dynamic> json) {
     try {
@@ -126,14 +128,12 @@ class Content extends Equatable {
         maxAcceptedPayout,
         community,
         communityTitle,
-        authorperm,
         pendingToken,
         precision,
         token,
         muted,
         upvotes,
         downvotes,
-        replies,
-        allComments
+        replies
       ];
 }
