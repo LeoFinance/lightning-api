@@ -19,8 +19,7 @@ class LightningApiClient {
 
     if (postResponse.statusCode != 200) {
       if (postResponse.statusCode == 404) {
-        final ap = Authorperm.parse(authorperm);
-        throw PostNotFoundFailure(ap.author, ap.permlink);
+        throw NotFoundFailure('Could not find content for $authorperm');
       } else {
         throw ContentRequestFailure(statusCode: postResponse.statusCode);
       }
@@ -29,8 +28,7 @@ class LightningApiClient {
     final bodyJson = jsonDecode(postResponse.body) as Map<String, dynamic>;
 
     if (bodyJson.isEmpty) {
-      final ap = Authorperm.parse(authorperm);
-      throw PostNotFoundFailure(ap.author, ap.permlink);
+      throw NotFoundFailure('Could not find content $authorperm');
     }
 
     try {
@@ -49,13 +47,13 @@ class LightningApiClient {
 
     if (postResponse.statusCode != 200) {
       if (postResponse.statusCode == 404) {
-        throw FeedNotFoundFailure(sort: sort, tag: tag);
+        throw NotFoundFailure('Could not find feed $tag/$sort');
       } else {
         throw ContentRequestFailure(statusCode: postResponse.statusCode);
       }
     }
 
-    final bodyJson = jsonDecode(postResponse.body) as List<dynamic>;
+    final bodyJson = jsonDecode(postResponse.body);
 
     return Feed.fromJson(bodyJson);
   }

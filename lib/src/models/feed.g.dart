@@ -7,12 +7,9 @@ part of 'feed.dart';
 // **************************************************************************
 
 Feed _$FeedFromJson(Map<String, dynamic> json) => Feed(
-      items: (json['items'] as List<dynamic>?)
-              ?.map((e) => Content.fromJson(e as Map<String, dynamic>))
-              .toList() ??
-          const [],
+      (json['items'] as List<dynamic>).map((e) => e as String).toList(),
     );
 
 Map<String, dynamic> _$FeedToJson(Feed instance) => <String, dynamic>{
-      'items': instance.items.map((e) => e.toJson()).toList(),
+      'items': instance.items,
     };

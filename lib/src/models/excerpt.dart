@@ -3,10 +3,10 @@ import 'package:json_annotation/json_annotation.dart';
 
 import 'models.dart';
 
-part 'content.g.dart';
+part 'excerpt.g.dart';
 
 @JsonSerializable(fieldRename: FieldRename.snake, explicitToJson: true)
-class Content extends Equatable {
+class Excerpt extends Equatable {
   final int id;
 
   final String author;
@@ -16,35 +16,14 @@ class Content extends Equatable {
   final String body;
 
   final JsonMetadata jsonMetadata;
-  // final String app;
-  // final ContentFormat? format;
-  // final Uri? canonicalUrl;
-  // final List<String> tags;
-  // final List<String> links;
 
-  // static DateTime _toUTC(String json) {
-  //   return DateTime.parse(json + (json.endsWith('Z') ? '' : 'Z'));
-  // }
-
-  // static DateTime? _toUTCNullable(String? json) {
-  //   return json != null
-  //       ? DateTime.parse(json + (json.endsWith('Z') ? '' : 'Z'))
-  //       : null;
-  // }
-
-  // @JsonKey(fromJson: _toUTC)
   final DateTime created;
-  // @JsonKey(fromJson: _toUTCNullable)
   final DateTime? updated;
 
   /// The direct children of this content
   final int numChildren;
 
-  /// All of the replies to this content
-  final List<Comment> replies;
-
   final int netRshares;
-
   final double authorReputation;
   final Stats stats;
   final String url;
@@ -68,7 +47,7 @@ class Content extends Equatable {
   final Map<String, double> tribeUpvotes;
   final Map<String, double> tribeDownvotes;
 
-  Content(
+  Excerpt(
       {required this.id,
       required this.author,
       required this.permlink,
@@ -76,11 +55,6 @@ class Content extends Equatable {
       required this.title,
       required this.body,
       required this.jsonMetadata,
-      // required this.app,
-      // this.format,
-      // this.canonicalUrl,
-      // this.tags = const [],
-      // this.links = const [],
       required this.created,
       required this.updated,
       required this.numChildren,
@@ -92,7 +66,6 @@ class Content extends Equatable {
       required this.maxAcceptedPayout,
       required this.upvotes,
       required this.downvotes,
-      required this.replies,
       this.community = '',
       this.communityTitle = '',
       required this.tribePendingToken,
@@ -110,9 +83,9 @@ class Content extends Equatable {
 
   String get authorperm => '@$author/$permlink';
 
-  factory Content.fromJson(Map<String, dynamic> json) {
+  factory Excerpt.fromJson(Map<String, dynamic> json) {
     try {
-      return _$ContentFromJson(json);
+      return _$ExcerptFromJson(json);
     } catch (e, s) {
       print('Failed parsing content $e');
       print(s);
@@ -120,7 +93,7 @@ class Content extends Equatable {
     }
   }
 
-  Map<String, dynamic> toJson() => _$ContentToJson(this);
+  Map<String, dynamic> toJson() => _$ExcerptToJson(this);
 
   @override
   List<Object?> get props => [
@@ -147,7 +120,6 @@ class Content extends Equatable {
         tribeToken,
         tribeIsMuted,
         upvotes,
-        downvotes,
-        replies
+        downvotes
       ];
 }

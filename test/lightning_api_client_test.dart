@@ -41,13 +41,13 @@ void main() {
         );
       });
 
-      test('throws PostNotFoundFailure on 404', () async {
+      test('throws NotFoundFailure on 404', () async {
         final response = MockResponse();
         when(response.statusCode).thenReturn(404);
         when(httpClient.get(lightningUri)).thenAnswer((_) async => response);
         expect(
           lightningApiClient.getContent(authorperm),
-          throwsA(isA<PostNotFoundFailure>()),
+          throwsA(isA<NotFoundFailure>()),
         );
       });
 
@@ -65,7 +65,7 @@ void main() {
         expect(
             actual,
             isA<Content>()
-                .having((p) => p.postId, 'postId', 107387380)
+                .having((p) => p.id, 'id', 107387380)
                 .having((p) => p.author, 'author', 'cwow2')
                 .having(
                     (p) => p.permlink, 'permlink', 'selling-my-hive-goodbye')

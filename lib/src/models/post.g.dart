@@ -1,25 +1,26 @@
 // GENERATED CODE - DO NOT MODIFY BY HAND
 
-part of 'content.dart';
+part of 'post.dart';
 
 // **************************************************************************
 // JsonSerializableGenerator
 // **************************************************************************
 
-Content _$ContentFromJson(Map<String, dynamic> json) => Content(
+Post _$PostFromJson(Map<String, dynamic> json) => Post(
       id: json['id'] as int,
       author: json['author'] as String,
       permlink: json['permlink'] as String,
       category: json['category'] as String,
       title: json['title'] as String,
       body: json['body'] as String,
+      numChildren: json['num_children'] as int,
+      replies: (json['replies'] as List<dynamic>)
+          .map((e) => Comment.fromJson(e as Map<String, dynamic>))
+          .toList(),
       jsonMetadata:
           JsonMetadata.fromJson(json['json_metadata'] as Map<String, dynamic>),
       created: DateTime.parse(json['created'] as String),
-      updated: json['updated'] == null
-          ? null
-          : DateTime.parse(json['updated'] as String),
-      numChildren: json['num_children'] as int,
+      updated: DateTime.parse(json['updated'] as String),
       netRshares: json['net_rshares'] as int,
       authorReputation: (json['author_reputation'] as num).toDouble(),
       stats: Stats.fromJson(json['stats'] as Map<String, dynamic>),
@@ -28,11 +29,6 @@ Content _$ContentFromJson(Map<String, dynamic> json) => Content(
           .map((e) => Beneficiary.fromJson(e as Map<String, dynamic>))
           .toList(),
       maxAcceptedPayout: json['max_accepted_payout'] as String,
-      upvotes: Map<String, int>.from(json['upvotes'] as Map),
-      downvotes: Map<String, int>.from(json['downvotes'] as Map),
-      replies: (json['replies'] as List<dynamic>)
-          .map((e) => Comment.fromJson(e as Map<String, dynamic>))
-          .toList(),
       community: json['community'] as String?,
       communityTitle: json['community_title'] as String?,
       tribePendingToken: json['tribe_pending_token'] as int,
@@ -45,6 +41,8 @@ Content _$ContentFromJson(Map<String, dynamic> json) => Content(
       tribeTotalPayoutValue: json['tribe_total_payout_value'] as int,
       tribeTotalVoteWeight: json['tribe_total_vote_weight'] as int,
       tribeVoteRshares: json['tribe_vote_rshares'] as int,
+      upvotes: Map<String, int>.from(json['upvotes'] as Map),
+      downvotes: Map<String, int>.from(json['downvotes'] as Map),
       tribeUpvotes: (json['tribe_upvotes'] as Map<String, dynamic>).map(
         (k, e) => MapEntry(k, (e as num).toDouble()),
       ),
@@ -53,7 +51,7 @@ Content _$ContentFromJson(Map<String, dynamic> json) => Content(
       ),
     );
 
-Map<String, dynamic> _$ContentToJson(Content instance) => <String, dynamic>{
+Map<String, dynamic> _$PostToJson(Post instance) => <String, dynamic>{
       'id': instance.id,
       'author': instance.author,
       'permlink': instance.permlink,

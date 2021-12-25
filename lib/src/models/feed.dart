@@ -1,22 +1,31 @@
 import 'package:equatable/equatable.dart';
 import 'package:json_annotation/json_annotation.dart';
 
-import "content.dart";
-
 part 'feed.g.dart';
 
 @JsonSerializable(explicitToJson: true)
 class Feed extends Equatable {
-  final List<Content> items;
+  final List<String> items;
 
-  Feed({this.items = const []});
+  Feed(this.items);
 
-  factory Feed.fromJson(List<dynamic> json) {
-    return Feed(
-        items: json
-            .where((j) => j.isNotEmpty)
-            .map((j) => Content.fromJson(j))
-            .toList());
+  int get length => items.length;
+
+  // factory Feed.fromJson(List<dynamic> json) {
+  //   return Feed(json
+  //       .where((j) => j.isNotEmpty)
+  //       .map((j) => Excerpt.fromJson(j))
+  //       .toList());
+  // }
+
+  factory Feed.fromJson(Map<String, dynamic> json) {
+    try {
+      return _$FeedFromJson(json);
+    } catch (e, s) {
+      print('Failed parsing content $e');
+      print(s);
+      throw e;
+    }
   }
 
   Map<String, dynamic> toJson() => _$FeedToJson(this);
