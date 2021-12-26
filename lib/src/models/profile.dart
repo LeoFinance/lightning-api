@@ -89,22 +89,22 @@ class ProfileWrapper extends Equatable {
 @JsonSerializable(fieldRename: FieldRename.snake, explicitToJson: true)
 class Profile extends Equatable {
   Profile({
-    required this.name,
-    required this.about,
+    this.name,
+    this.about,
     this.website,
     this.location,
     this.coverImage,
-    required this.profileImage,
+    this.profileImage,
     this.blacklistDescription,
     this.mutedListDescription,
   });
 
-  final String name;
-  final String about;
+  final String? name;
+  final String? about;
   final String? website;
   final String? location;
   final String? coverImage;
-  final String profileImage;
+  final String? profileImage;
   final String? blacklistDescription;
   final String? mutedListDescription;
 

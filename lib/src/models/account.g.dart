@@ -10,7 +10,9 @@ Account _$AccountFromJson(Map<String, dynamic> json) => Account(
       id: json['id'] as int,
       name: json['name'] as String,
       reputation: json['reputation'] as int,
-      profile: Profile.fromJson(json['profile'] as Map<String, dynamic>),
+      profile: json['profile'] == null
+          ? null
+          : Profile.fromJson(json['profile'] as Map<String, dynamic>),
       jsonMetadata: json['json_metadata'] as String,
       postingJsonMetadata: json['posting_json_metadata'] as String,
       lastOwnerUpdate: DateTime.parse(json['last_owner_update'] as String),
@@ -96,7 +98,7 @@ Map<String, dynamic> _$AccountToJson(Account instance) => <String, dynamic>{
       'id': instance.id,
       'name': instance.name,
       'reputation': instance.reputation,
-      'profile': instance.profile.toJson(),
+      'profile': instance.profile?.toJson(),
       'json_metadata': instance.jsonMetadata,
       'posting_json_metadata': instance.postingJsonMetadata,
       'last_owner_update': instance.lastOwnerUpdate.toIso8601String(),

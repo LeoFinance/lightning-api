@@ -78,7 +78,7 @@ class Account {
   final int id;
   final String name;
   final int reputation;
-  final Profile profile;
+  final Profile? profile;
   final String jsonMetadata;
   final String postingJsonMetadata;
   final DateTime lastOwnerUpdate;
