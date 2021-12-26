@@ -26,7 +26,7 @@ Comment _$CommentFromJson(Map<String, dynamic> json) => Comment(
       updated: DateTime.parse(json['updated'] as String),
       netRshares: json['net_rshares'] as int,
       authorReputation: (json['author_reputation'] as num).toDouble(),
-      stats: Stats.fromJson(json['stats'] as Map<String, dynamic>),
+      stats: json['stats'],
       url: json['url'] as String,
       beneficiaries: (json['beneficiaries'] as List<dynamic>)
           .map((e) => Beneficiary.fromJson(e as Map<String, dynamic>))
@@ -68,7 +68,7 @@ Map<String, dynamic> _$CommentToJson(Comment instance) => <String, dynamic>{
       'replies': instance.replies.map((e) => e.toJson()).toList(),
       'net_rshares': instance.netRshares,
       'author_reputation': instance.authorReputation,
-      'stats': instance.stats.toJson(),
+      'stats': instance.stats,
       'url': instance.url,
       'beneficiaries': instance.beneficiaries.map((e) => e.toJson()).toList(),
       'max_accepted_payout': instance.maxAcceptedPayout,
