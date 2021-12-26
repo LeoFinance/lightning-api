@@ -12,7 +12,7 @@ class LightningApiClient {
   LightningApiClient({http.Client? httpClient})
       : _httpClient = httpClient ?? http.Client();
 
-  Future<Content> getContent(authorperm) async {
+  Future<Post> getPost(authorperm) async {
     final uri = Uri.https(_baseUrl, '/lightning/posts/$authorperm');
 
     final postResponse = await _httpClient.get(uri);
@@ -32,7 +32,7 @@ class LightningApiClient {
     }
 
     try {
-      return Content.fromJson(bodyJson);
+      return Post.fromJson(bodyJson);
     } catch (e, s) {
       print('Failed to parse $authorperm: $e');
       print(s);

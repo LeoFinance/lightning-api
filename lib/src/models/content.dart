@@ -16,31 +16,12 @@ class Content extends Equatable {
   final String body;
 
   final JsonMetadata jsonMetadata;
-  // final String app;
-  // final ContentFormat? format;
-  // final Uri? canonicalUrl;
-  // final List<String> tags;
-  // final List<String> links;
 
-  // static DateTime _toUTC(String json) {
-  //   return DateTime.parse(json + (json.endsWith('Z') ? '' : 'Z'));
-  // }
-
-  // static DateTime? _toUTCNullable(String? json) {
-  //   return json != null
-  //       ? DateTime.parse(json + (json.endsWith('Z') ? '' : 'Z'))
-  //       : null;
-  // }
-
-  // @JsonKey(fromJson: _toUTC)
   final DateTime created;
-  // @JsonKey(fromJson: _toUTCNullable)
   final DateTime? updated;
 
-  /// The direct children of this content
   final int numChildren;
 
-  /// All of the replies to this content
   final List<Comment> replies;
 
   final int netRshares;
@@ -76,11 +57,6 @@ class Content extends Equatable {
       required this.title,
       required this.body,
       required this.jsonMetadata,
-      // required this.app,
-      // this.format,
-      // this.canonicalUrl,
-      // this.tags = const [],
-      // this.links = const [],
       required this.created,
       required this.updated,
       required this.numChildren,
@@ -109,6 +85,13 @@ class Content extends Equatable {
       required this.tribeDownvotes});
 
   String get authorperm => '@$author/$permlink';
+  int get depth => 0;
+
+  bool didUpvote(String? username) => upvotes.containsKey(username);
+  bool didDownvote(String? username) => downvotes.containsKey(username);
+  bool tribeDidUpvote(String? username) => tribeUpvotes.containsKey(username);
+  bool tribeDidDownvote(String? username) =>
+      tribeDownvotes.containsKey(username);
 
   factory Content.fromJson(Map<String, dynamic> json) {
     try {

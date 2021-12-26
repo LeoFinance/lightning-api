@@ -36,7 +36,7 @@ void main() {
         when(response.statusCode).thenReturn(400);
         when(httpClient.get(lightningUri)).thenAnswer((_) async => response);
         expect(
-          lightningApiClient.getContent(authorperm),
+          lightningApiClient.getPost(authorperm),
           throwsA(isA<ContentRequestFailure>()),
         );
       });
@@ -46,7 +46,7 @@ void main() {
         when(response.statusCode).thenReturn(404);
         when(httpClient.get(lightningUri)).thenAnswer((_) async => response);
         expect(
-          lightningApiClient.getContent(authorperm),
+          lightningApiClient.getPost(authorperm),
           throwsA(isA<NotFoundFailure>()),
         );
       });
@@ -57,7 +57,7 @@ void main() {
         when(response.body)
             .thenReturn(await File('test/samples/content.json').readAsString());
         when(httpClient.get(lightningUri)).thenAnswer((_) async => response);
-        final actual = await lightningApiClient.getContent(authorperm);
+        final actual = await lightningApiClient.getPost(authorperm);
         verify(
           httpClient.get(lightningUri),
         ).called(1);
