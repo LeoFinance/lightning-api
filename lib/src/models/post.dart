@@ -20,7 +20,7 @@ class Post extends Content {
       required DateTime updated,
       required int netRshares,
       required double authorReputation,
-      required Stats stats,
+      required PostStats stats,
       required String url,
       required List<Beneficiary> beneficiaries,
       required String maxAcceptedPayout,

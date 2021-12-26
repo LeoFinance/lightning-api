@@ -46,7 +46,7 @@ class Content extends Equatable {
   final int netRshares;
 
   final double authorReputation;
-  final Stats stats;
+  final PostStats stats;
   final String url;
   final List<Beneficiary> beneficiaries;
   final String maxAcceptedPayout;

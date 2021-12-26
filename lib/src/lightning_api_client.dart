@@ -5,7 +5,7 @@ import 'package:http/http.dart' as http;
 import '../lightning_api.dart';
 
 class LightningApiClient {
-  static const _baseUrl = 'alpha.leofinance.io';
+  static const _baseUrl = 'beta.leofinance.io';
   final http.Client _httpClient;
 
   /// {@macro lightning_api_client}
@@ -41,7 +41,8 @@ class LightningApiClient {
     }
   }
 
-  Future<Feed> getFeed({required String tag, required String sort}) async {
+  Future<Feed> getFeed(
+      {required String tag, required String sort, int? limit}) async {
     final uri = Uri.https(_baseUrl, '/lightning/feeds/$tag/$sort');
     final postResponse = await _httpClient.get(uri);
 

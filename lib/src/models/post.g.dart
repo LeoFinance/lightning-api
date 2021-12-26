@@ -23,7 +23,7 @@ Post _$PostFromJson(Map<String, dynamic> json) => Post(
       updated: DateTime.parse(json['updated'] as String),
       netRshares: json['net_rshares'] as int,
       authorReputation: (json['author_reputation'] as num).toDouble(),
-      stats: json['stats'],
+      stats: PostStats.fromJson(json['stats'] as Map<String, dynamic>),
       url: json['url'] as String,
       beneficiaries: (json['beneficiaries'] as List<dynamic>)
           .map((e) => Beneficiary.fromJson(e as Map<String, dynamic>))
@@ -65,7 +65,7 @@ Map<String, dynamic> _$PostToJson(Post instance) => <String, dynamic>{
       'replies': instance.replies.map((e) => e.toJson()).toList(),
       'net_rshares': instance.netRshares,
       'author_reputation': instance.authorReputation,
-      'stats': instance.stats,
+      'stats': instance.stats.toJson(),
       'url': instance.url,
       'beneficiaries': instance.beneficiaries.map((e) => e.toJson()).toList(),
       'max_accepted_payout': instance.maxAcceptedPayout,
