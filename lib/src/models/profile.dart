@@ -92,7 +92,7 @@ class Profile extends Equatable {
     required this.name,
     required this.about,
     this.website,
-    required this.location,
+    this.location,
     this.coverImage,
     required this.profileImage,
     this.blacklistDescription,
@@ -102,7 +102,7 @@ class Profile extends Equatable {
   final String name;
   final String about;
   final String? website;
-  final String location;
+  final String? location;
   final String? coverImage;
   final String profileImage;
   final String? blacklistDescription;

@@ -20,7 +20,7 @@ Profile _$ProfileFromJson(Map<String, dynamic> json) => Profile(
       name: json['name'] as String,
       about: json['about'] as String,
       website: json['website'] as String?,
-      location: json['location'] as String,
+      location: json['location'] as String?,
       coverImage: json['cover_image'] as String?,
       profileImage: json['profile_image'] as String,
       blacklistDescription: json['blacklist_description'] as String?,
