@@ -7,12 +7,16 @@ part 'excerpt.g.dart';
 
 @JsonSerializable(fieldRename: FieldRename.snake, explicitToJson: true)
 class Excerpt extends Equatable {
+  static const EXCERPT_LENGTH = 200;
+
   final int id;
 
   final String author;
   final String permlink;
   final String category;
   final String title;
+
+  @JsonKey(fromJson: _extractSummary)
   final String body;
 
   final JsonMetadata jsonMetadata;
@@ -46,6 +50,37 @@ class Excerpt extends Equatable {
   final Map<String, int> downvotes;
   final Map<String, double> tribeUpvotes;
   final Map<String, double> tribeDownvotes;
+
+  static String _extractSummary(String text) {
+    final firstSententceMatch = RegExp(r'^.*?\\n');
+
+    final matchParen = RegExp(r'\(.*\)');
+    final matchLink = RegExp(r'!?\[.*]]?');
+    final matchFullHtml = RegExp(r'<.*?\/.*?>');
+    final matchHeader = RegExp(r'#+\s.*?\n');
+    final matchTag = RegExp(r'<.*?>');
+    final matchUrl = RegExp(r'https?:\/\/[^\s]*');
+    final matchMultipleSpaces = RegExp(r'\s\s+');
+    final matchPostedTag = RegExp(r'Posted Using.*');
+
+    // Note that the order is important, as we are removing nested items
+    final plainText = text
+        .replaceAll(matchFullHtml, '')
+        .replaceAll(matchParen, '')
+        .replaceAll(matchLink, '')
+        .replaceAll(matchHeader, '')
+        .replaceAll(matchTag, '')
+        .replaceAll(matchUrl, '')
+        .replaceAll('*', '')
+        .replaceAll('---', '')
+        .replaceAll('\n', '')
+        .replaceAll(matchMultipleSpaces, ' ')
+        .replaceAll(matchPostedTag, '')
+        .trim();
+    final summary = (firstSententceMatch.stringMatch(plainText) ?? plainText)
+        .substring(0, EXCERPT_LENGTH);
+    return summary;
+  }
 
   Excerpt(
       {required this.id,

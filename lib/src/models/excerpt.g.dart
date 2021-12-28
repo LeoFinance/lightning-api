@@ -12,7 +12,7 @@ Excerpt _$ExcerptFromJson(Map<String, dynamic> json) => Excerpt(
       permlink: json['permlink'] as String,
       category: json['category'] as String,
       title: json['title'] as String,
-      body: json['body'] as String,
+      body: Excerpt._extractSummary(json['body'] as String),
       jsonMetadata:
           JsonMetadata.fromJson(json['json_metadata'] as Map<String, dynamic>),
       created: DateTime.parse(json['created'] as String),
