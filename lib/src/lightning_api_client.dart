@@ -41,6 +41,35 @@ class LightningApiClient {
     }
   }
 
+  Future<Excerpt> getExcerpt(authorperm) async {
+    final uri = Uri.https(_baseUrl, '/lightning/excerpts/$authorperm');
+
+    final postResponse = await _httpClient.get(uri);
+
+    if (postResponse.statusCode != 200) {
+      if (postResponse.statusCode == 404) {
+        throw NotFoundFailure('Could not find content for $authorperm');
+      } else {
+        throw ContentRequestFailure(statusCode: postResponse.statusCode);
+      }
+    }
+
+    final bodyJson = jsonDecode(postResponse.body) as Map<String, dynamic>;
+
+    if (bodyJson.isEmpty) {
+      throw NotFoundFailure('Could not find content $authorperm');
+    }
+
+    try {
+      return Excerpt.fromJson(bodyJson);
+    } catch (e, s) {
+      print('Failed to parse $authorperm: $e');
+      print(s);
+      print('Failed data: $bodyJson');
+      throw e;
+    }
+  }
+
   Future<Feed> getFeed(
       {required String tag, required String sort, int? limit}) async {
     final uri = Uri.https(_baseUrl, '/lightning/feeds/$tag/$sort');

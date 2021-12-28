@@ -17,7 +17,7 @@ class Post extends Content {
       required List<Comment> replies,
       required JsonMetadata jsonMetadata,
       required DateTime created,
-      required DateTime updated,
+      required DateTime? updated,
       required int netRshares,
       required double authorReputation,
       required PostStats stats,
@@ -48,11 +48,6 @@ class Post extends Content {
             title: title,
             body: body,
             jsonMetadata: jsonMetadata,
-            // app: app,
-            // format: format,
-            // canonicalUrl: canonicalUrl,
-            // tags: tags,
-            // links: links,
             created: created,
             updated: updated,
             numChildren: numChildren,
@@ -79,7 +74,6 @@ class Post extends Content {
             tribeVoteRshares: tribeVoteRshares,
             tribeUpvotes: tribeUpvotes,
             tribeDownvotes: tribeDownvotes);
-  String get authorperm => '@$author/$permlink';
 
   factory Post.fromJson(Map<String, dynamic> json) {
     try {
@@ -92,12 +86,4 @@ class Post extends Content {
   }
 
   Map<String, dynamic> toJson() => _$PostToJson(this);
-
-  @override
-  List<Object?> get props => [
-        ...super.props,
-      ];
-
-  @override
-  bool get stringify => true;
 }

@@ -20,7 +20,9 @@ Post _$PostFromJson(Map<String, dynamic> json) => Post(
       jsonMetadata:
           JsonMetadata.fromJson(json['json_metadata'] as Map<String, dynamic>),
       created: DateTime.parse(json['created'] as String),
-      updated: DateTime.parse(json['updated'] as String),
+      updated: json['updated'] == null
+          ? null
+          : DateTime.parse(json['updated'] as String),
       netRshares: json['net_rshares'] as int,
       authorReputation: (json['author_reputation'] as num).toDouble(),
       stats: PostStats.fromJson(json['stats'] as Map<String, dynamic>),

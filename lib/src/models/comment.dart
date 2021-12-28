@@ -20,7 +20,7 @@ class Comment extends Content {
       required List<Comment> replies,
       required JsonMetadata jsonMetadata,
       required DateTime created,
-      required DateTime updated,
+      required DateTime? updated,
       required int netRshares,
       required double authorReputation,
       required PostStats stats,

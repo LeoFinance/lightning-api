@@ -29,7 +29,9 @@ class _FakeStreamedResponse_1 extends _i1.Fake implements _i3.StreamedResponse {
 
 class _FakePost_2 extends _i1.Fake implements _i4.Post {}
 
-class _FakeFeed_3 extends _i1.Fake implements _i4.Feed {}
+class _FakeExcerpt_3 extends _i1.Fake implements _i4.Excerpt {}
+
+class _FakeFeed_4 extends _i1.Fake implements _i4.Feed {}
 
 /// A class which mocks [Client].
 ///
@@ -163,11 +165,16 @@ class MockLightningApiClient extends _i1.Mock
               returnValue: Future<_i4.Post>.value(_FakePost_2()))
           as _i6.Future<_i4.Post>);
   @override
+  _i6.Future<_i4.Excerpt> getExcerpt(dynamic authorperm) =>
+      (super.noSuchMethod(Invocation.method(#getExcerpt, [authorperm]),
+              returnValue: Future<_i4.Excerpt>.value(_FakeExcerpt_3()))
+          as _i6.Future<_i4.Excerpt>);
+  @override
   _i6.Future<_i4.Feed> getFeed({String? tag, String? sort, int? limit}) =>
       (super.noSuchMethod(
               Invocation.method(
                   #getFeed, [], {#tag: tag, #sort: sort, #limit: limit}),
-              returnValue: Future<_i4.Feed>.value(_FakeFeed_3()))
+              returnValue: Future<_i4.Feed>.value(_FakeFeed_4()))
           as _i6.Future<_i4.Feed>);
   @override
   String toString() => super.toString();
