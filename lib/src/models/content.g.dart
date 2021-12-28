@@ -33,8 +33,8 @@ Content _$ContentFromJson(Map<String, dynamic> json) => Content(
       replies: (json['replies'] as List<dynamic>)
           .map((e) => Comment.fromJson(e as Map<String, dynamic>))
           .toList(),
-      community: json['community'] as String?,
-      communityTitle: json['community_title'] as String?,
+      community: json['community'] as String? ?? '',
+      communityTitle: json['community_title'] as String? ?? '',
       tribePendingToken: json['tribe_pending_token'] as int,
       tribePrecision: json['tribe_precision'] as int,
       tribeToken: json['tribe_token'] as String,
