@@ -11,6 +11,11 @@ class Feed extends Equatable {
 
   int get length => items.length;
 
+  bool get isEmpty => items.isEmpty;
+  bool get isNotEmpty => items.isNotEmpty;
+
+  operator [](int index) => items[index];
+
   // factory Feed.fromJson(List<dynamic> json) {
   //   return Feed(json
   //       .where((j) => j.isNotEmpty)
