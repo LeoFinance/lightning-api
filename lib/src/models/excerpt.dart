@@ -1,3 +1,5 @@
+import 'dart:math';
+
 import 'package:json_annotation/json_annotation.dart';
 
 import 'models.dart';
@@ -102,9 +104,9 @@ class Excerpt extends Content {
         .replaceAll(matchMultipleSpaces, ' ')
         .replaceAll(matchPostedTag, '')
         .trim();
-    final summary = (firstSententceMatch.stringMatch(plainText) ?? plainText)
-        .substring(0, EXCERPT_LENGTH);
-    return summary;
+    final summary = (firstSententceMatch.stringMatch(plainText) ?? plainText);
+
+    return summary.substring(0, min(EXCERPT_LENGTH, summary.length));
   }
 
   factory Excerpt.fromPost(Post post) => Excerpt(
