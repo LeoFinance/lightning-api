@@ -117,6 +117,24 @@ class LightningApiClient {
     return Feed.fromJson(bodyJson);
   }
 
+  Future<List<Content>> getPosts(
+      {required String tag, required String sort, int? limit}) async {
+    final uri = Uri.https(_baseUrl, '/lightning/posts/$tag/$sort');
+    final postResponse = await _httpClient.get(uri);
+
+    if (postResponse.statusCode != 200) {
+      if (postResponse.statusCode == 404) {
+        throw NotFoundFailure('Could not find feed $tag/$sort');
+      } else {
+        throw ContentRequestFailure(statusCode: postResponse.statusCode);
+      }
+    }
+
+    final bodyJson = jsonDecode(postResponse.body) as List;
+
+    return bodyJson.map((e) => Content.fromJson(e)).toList();
+  }
+
   // Future<List<dynamic>> getFeedJson(
   //     {required String tag, required String sort}) async {
   //   final uri = Uri.https(_baseUrl, '/lightning/feeds/$tag/$sort');
