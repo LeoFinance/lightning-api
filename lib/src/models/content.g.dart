@@ -13,6 +13,13 @@ Content _$ContentFromJson(Map<String, dynamic> json) => Content(
       category: json['category'] as String,
       title: json['title'] as String,
       body: json['body'] as String,
+      parentAuthor: json['parent_author'] as String?,
+      parentPermlink: json['parent_permlink'] as String?,
+      depth: json['depth'] as int? ?? 0,
+      replies: (json['replies'] as List<dynamic>?)
+              ?.map((e) => e as String)
+              .toList() ??
+          const [],
       jsonMetadata:
           JsonMetadata.fromJson(json['json_metadata'] as Map<String, dynamic>),
       created: DateTime.parse(json['created'] as String),
@@ -30,11 +37,8 @@ Content _$ContentFromJson(Map<String, dynamic> json) => Content(
       maxAcceptedPayout: json['max_accepted_payout'] as String,
       upvotes: Map<String, int>.from(json['upvotes'] as Map),
       downvotes: Map<String, int>.from(json['downvotes'] as Map),
-      replies: (json['replies'] as List<dynamic>)
-          .map((e) => Comment.fromJson(e as Map<String, dynamic>))
-          .toList(),
-      community: json['community'] as String?,
-      communityTitle: json['community_title'] as String?,
+      community: json['community'] as String? ?? '',
+      communityTitle: json['community_title'] as String? ?? '',
       tribePendingToken: json['tribe_pending_token'] as int,
       tribePrecision: json['tribe_precision'] as int,
       tribeToken: json['tribe_token'] as String,
@@ -60,11 +64,14 @@ Map<String, dynamic> _$ContentToJson(Content instance) => <String, dynamic>{
       'category': instance.category,
       'title': instance.title,
       'body': instance.body,
+      'parent_author': instance.parentAuthor,
+      'parent_permlink': instance.parentPermlink,
+      'depth': instance.depth,
+      'replies': instance.replies,
       'json_metadata': instance.jsonMetadata.toJson(),
       'created': instance.created.toIso8601String(),
       'updated': instance.updated?.toIso8601String(),
       'num_children': instance.numChildren,
-      'replies': instance.replies.map((e) => e.toJson()).toList(),
       'net_rshares': instance.netRshares,
       'author_reputation': instance.authorReputation,
       'stats': instance.stats.toJson(),

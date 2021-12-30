@@ -15,14 +15,17 @@ class Content extends Equatable {
   final String title;
   final String body;
 
+  final String? parentAuthor;
+  final String? parentPermlink;
+  final int depth;
+  final List<String> replies;
+
   final JsonMetadata jsonMetadata;
 
   final DateTime created;
   final DateTime? updated;
 
   final int numChildren;
-
-  final List<Comment> replies;
 
   final int netRshares;
 
@@ -56,6 +59,10 @@ class Content extends Equatable {
       required this.category,
       required this.title,
       required this.body,
+      this.parentAuthor,
+      this.parentPermlink,
+      this.depth = 0,
+      this.replies = const [],
       required this.jsonMetadata,
       required this.created,
       required this.updated,
@@ -68,7 +75,6 @@ class Content extends Equatable {
       required this.maxAcceptedPayout,
       required this.upvotes,
       required this.downvotes,
-      required this.replies,
       this.community = '',
       this.communityTitle = '',
       required this.tribePendingToken,
@@ -85,7 +91,6 @@ class Content extends Equatable {
       required this.tribeDownvotes});
 
   String get authorperm => '@$author/$permlink';
-  int get depth => 0;
 
   bool didUpvote(String? username) => upvotes.containsKey(username);
   bool didDownvote(String? username) => downvotes.containsKey(username);
@@ -113,6 +118,8 @@ class Content extends Equatable {
         category,
         title,
         body,
+        parentAuthor,
+        parentPermlink,
         jsonMetadata,
         created,
         updated,
@@ -131,6 +138,5 @@ class Content extends Equatable {
         tribeIsMuted,
         upvotes,
         downvotes,
-        replies
       ];
 }
