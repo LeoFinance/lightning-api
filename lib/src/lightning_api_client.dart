@@ -13,7 +13,7 @@ class LightningApiClient {
       : _httpClient = httpClient ?? http.Client();
 
   Future<Content> getContent(authorperm) async {
-    final uri = Uri.https(_baseUrl, '/lightning/posts/$authorperm');
+    final uri = Uri.https(_baseUrl, '/lightning/content/$authorperm');
 
     final postResponse = await _httpClient.get(uri);
 
