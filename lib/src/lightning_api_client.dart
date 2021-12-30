@@ -100,8 +100,16 @@ class LightningApiClient {
   // }
 
   Future<Feed> getFeed(
-      {required String tag, required String sort, int? limit}) async {
-    final uri = Uri.https(_baseUrl, '/lightning/feeds/$tag/$sort');
+      {required String tag,
+      required String sort,
+      int? start,
+      int? limit}) async {
+    final queryParameters = <String, String>{};
+    if (start != null) queryParameters['start'] = start.toString();
+    if (limit != null) queryParameters['limit'] = limit.toString();
+
+    final uri = Uri.https(_baseUrl, '/lightning/feeds/$tag/$sort',
+        queryParameters.isNotEmpty ? queryParameters : null);
     final postResponse = await _httpClient.get(uri);
 
     if (postResponse.statusCode != 200) {
@@ -118,8 +126,15 @@ class LightningApiClient {
   }
 
   Future<List<Content>> getPosts(
-      {required String tag, required String sort, int? limit}) async {
-    final uri = Uri.https(_baseUrl, '/lightning/posts/$tag/$sort');
+      {required String tag,
+      required String sort,
+      int? start,
+      int? limit}) async {
+    final queryParameters = <String, String>{};
+    if (start != null) queryParameters['start'] = start.toString();
+    if (limit != null) queryParameters['limit'] = limit.toString();
+    final uri = Uri.https(_baseUrl, '/lightning/posts/$tag/$sort',
+        queryParameters.isNotEmpty ? queryParameters : null);
     final postResponse = await _httpClient.get(uri);
 
     if (postResponse.statusCode != 200) {

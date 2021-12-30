@@ -170,18 +170,19 @@ class MockLightningApiClient extends _i1.Mock
               returnValue: Future<_i4.Comments>.value(_FakeComments_3()))
           as _i6.Future<_i4.Comments>);
   @override
-  _i6.Future<_i4.Feed> getFeed({String? tag, String? sort, int? limit}) =>
+  _i6.Future<_i4.Feed> getFeed(
+          {String? tag, String? sort, int? start, int? limit}) =>
       (super.noSuchMethod(
-              Invocation.method(
-                  #getFeed, [], {#tag: tag, #sort: sort, #limit: limit}),
+              Invocation.method(#getFeed, [],
+                  {#tag: tag, #sort: sort, #start: start, #limit: limit}),
               returnValue: Future<_i4.Feed>.value(_FakeFeed_4()))
           as _i6.Future<_i4.Feed>);
   @override
   _i6.Future<List<_i4.Content>> getPosts(
-          {String? tag, String? sort, int? limit}) =>
+          {String? tag, String? sort, int? start, int? limit}) =>
       (super.noSuchMethod(
-              Invocation.method(
-                  #getPosts, [], {#tag: tag, #sort: sort, #limit: limit}),
+              Invocation.method(#getPosts, [],
+                  {#tag: tag, #sort: sort, #start: start, #limit: limit}),
               returnValue: Future<List<_i4.Content>>.value(<_i4.Content>[]))
           as _i6.Future<List<_i4.Content>>);
   @override
