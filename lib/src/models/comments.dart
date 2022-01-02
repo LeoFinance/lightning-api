@@ -12,15 +12,22 @@ class Comments extends Equatable {
 
   final Map<String, Content> items;
 
+  /// A map of authorperms to the children of each piece of content
+  final Map<String, List<String>> children;
+
   const Comments(
       {required this.parentAuthor,
       required this.parentPermlink,
-      required this.items});
+      required this.items,
+      required this.children});
 
   bool get isEmpty => items.isEmpty;
   bool get isNotEmpty => items.isNotEmpty;
   int get length => items.length;
   Content? operator [](String authorperm) => items[authorperm];
+
+  List<Content>? childrenOf(String authorperm) =>
+      children[authorperm]?.map((ap) => items[ap]!).toList();
 
   factory Comments.fromJson(Map<String, dynamic> json) {
     try {
@@ -35,5 +42,5 @@ class Comments extends Equatable {
   Map<String, dynamic> toJson() => _$CommentsToJson(this);
 
   @override
-  List<Object?> get props => [parentAuthor, parentPermlink, items];
+  List<Object?> get props => [parentAuthor, parentPermlink, items, children];
 }

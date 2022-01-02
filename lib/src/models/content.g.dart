@@ -16,10 +16,6 @@ Content _$ContentFromJson(Map<String, dynamic> json) => Content(
       parentAuthor: json['parent_author'] as String?,
       parentPermlink: json['parent_permlink'] as String?,
       depth: json['depth'] as int? ?? 0,
-      replies: (json['replies'] as List<dynamic>?)
-              ?.map((e) => e as String)
-              .toList() ??
-          const [],
       jsonMetadata:
           JsonMetadata.fromJson(json['json_metadata'] as Map<String, dynamic>),
       created: DateTime.parse(json['created'] as String),
@@ -67,7 +63,6 @@ Map<String, dynamic> _$ContentToJson(Content instance) => <String, dynamic>{
       'parent_author': instance.parentAuthor,
       'parent_permlink': instance.parentPermlink,
       'depth': instance.depth,
-      'replies': instance.replies,
       'json_metadata': instance.jsonMetadata.toJson(),
       'created': instance.created.toIso8601String(),
       'updated': instance.updated?.toIso8601String(),

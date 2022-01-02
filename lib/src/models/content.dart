@@ -18,7 +18,6 @@ class Content extends Equatable {
   final String? parentAuthor;
   final String? parentPermlink;
   final int depth;
-  final List<String> replies;
 
   final JsonMetadata jsonMetadata;
 
@@ -62,7 +61,6 @@ class Content extends Equatable {
       this.parentAuthor,
       this.parentPermlink,
       this.depth = 0,
-      this.replies = const [],
       required this.jsonMetadata,
       required this.created,
       required this.updated,

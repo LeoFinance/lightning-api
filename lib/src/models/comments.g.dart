@@ -12,10 +12,15 @@ Comments _$CommentsFromJson(Map<String, dynamic> json) => Comments(
       items: (json['items'] as Map<String, dynamic>).map(
         (k, e) => MapEntry(k, Content.fromJson(e as Map<String, dynamic>)),
       ),
+      children: (json['children'] as Map<String, dynamic>).map(
+        (k, e) =>
+            MapEntry(k, (e as List<dynamic>).map((e) => e as String).toList()),
+      ),
     );
 
 Map<String, dynamic> _$CommentsToJson(Comments instance) => <String, dynamic>{
       'parent_author': instance.parentAuthor,
       'parent_permlink': instance.parentPermlink,
       'items': instance.items.map((k, e) => MapEntry(k, e.toJson())),
+      'children': instance.children,
     };
