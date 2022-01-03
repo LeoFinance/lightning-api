@@ -165,7 +165,7 @@ class MockLightningApiClient extends _i1.Mock
               returnValue: Future<_i4.Content>.value(_FakeContent_2()))
           as _i6.Future<_i4.Content>);
   @override
-  _i6.Future<_i4.Comments> getComments(dynamic authorperm) =>
+  _i6.Future<_i4.Comments> getComments(String? authorperm) =>
       (super.noSuchMethod(Invocation.method(#getComments, [authorperm]),
               returnValue: Future<_i4.Comments>.value(_FakeComments_3()))
           as _i6.Future<_i4.Comments>);

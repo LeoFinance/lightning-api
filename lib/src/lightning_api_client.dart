@@ -41,7 +41,7 @@ class LightningApiClient {
     }
   }
 
-  Future<Comments> getComments(authorperm) async {
+  Future<Comments> getComments(String authorperm) async {
     final uri = Uri.https(_baseUrl, '/lightning/comments/$authorperm');
 
     final postResponse = await _httpClient.get(uri);
