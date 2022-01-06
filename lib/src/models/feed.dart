@@ -7,7 +7,7 @@ part 'feed.g.dart';
 
 @JsonSerializable(explicitToJson: true)
 class Feed extends Equatable {
-  final List<Authorperm> posts;
+  final List<String> posts;
 
   Feed(this.posts);
 
@@ -16,7 +16,7 @@ class Feed extends Equatable {
   bool get isEmpty => posts.isEmpty;
   bool get isNotEmpty => posts.isNotEmpty;
 
-  Authorperm operator [](int index) => posts[index];
+  Authorperm operator [](int index) => Authorperm.parse(posts[index]);
 
   // factory Feed.fromJson(List<dynamic> json) {
   //   return Feed(json
