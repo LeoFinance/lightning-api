@@ -8,6 +8,7 @@ export 'package:hive_bridge_api/hive_bridge_api.dart'
         NotFoundFailure;
 
 export 'account.dart';
+export 'authorperm.dart';
 export 'comments.dart';
 export 'content.dart';
 export 'feed.dart';

@@ -1,4 +1,3 @@
-import 'package:equatable/equatable.dart';
 import 'package:json_annotation/json_annotation.dart';
 
 import 'models.dart';
@@ -6,7 +5,7 @@ import 'models.dart';
 part 'content.g.dart';
 
 @JsonSerializable(fieldRename: FieldRename.snake, explicitToJson: true)
-class Content extends Equatable {
+class Content {
   final int id;
 
   final String author;
@@ -88,7 +87,7 @@ class Content extends Equatable {
       required this.tribeUpvotes,
       required this.tribeDownvotes});
 
-  String get authorperm => '@$author/$permlink';
+  Authorperm get authorperm => Authorperm(author, permlink);
 
   bool didUpvote(String? username) => upvotes.containsKey(username);
   bool didDownvote(String? username) => downvotes.containsKey(username);
@@ -107,34 +106,4 @@ class Content extends Equatable {
   }
 
   Map<String, dynamic> toJson() => _$ContentToJson(this);
-
-  @override
-  List<Object?> get props => [
-        id,
-        author,
-        permlink,
-        category,
-        title,
-        body,
-        parentAuthor,
-        parentPermlink,
-        jsonMetadata,
-        created,
-        updated,
-        numChildren,
-        netRshares,
-        authorReputation,
-        stats,
-        url,
-        beneficiaries,
-        maxAcceptedPayout,
-        community,
-        communityTitle,
-        tribePendingToken,
-        tribePrecision,
-        tribeToken,
-        tribeIsMuted,
-        upvotes,
-        downvotes,
-      ];
 }

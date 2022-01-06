@@ -1,20 +1,22 @@
 import 'package:equatable/equatable.dart';
 import 'package:json_annotation/json_annotation.dart';
 
+import 'models.dart';
+
 part 'feed.g.dart';
 
 @JsonSerializable(explicitToJson: true)
 class Feed extends Equatable {
-  final List<String> items;
+  final List<Authorperm> posts;
 
-  Feed(this.items);
+  Feed(this.posts);
 
-  int get length => items.length;
+  int get length => posts.length;
 
-  bool get isEmpty => items.isEmpty;
-  bool get isNotEmpty => items.isNotEmpty;
+  bool get isEmpty => posts.isEmpty;
+  bool get isNotEmpty => posts.isNotEmpty;
 
-  operator [](int index) => items[index];
+  Authorperm operator [](int index) => posts[index];
 
   // factory Feed.fromJson(List<dynamic> json) {
   //   return Feed(json
@@ -36,8 +38,8 @@ class Feed extends Equatable {
   Map<String, dynamic> toJson() => _$FeedToJson(this);
 
   @override
-  List<Object> get props => [items];
+  List<Object> get props => [posts];
 
   @override
-  String toString() => 'Feed[${items.length}]';
+  String toString() => 'Feed: $posts';
 }

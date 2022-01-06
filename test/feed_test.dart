@@ -12,7 +12,7 @@ void main() {
             .then(jsonDecode);
 
         expect(Feed.fromJson(json),
-            isA<Feed>().having((f) => f.items, 'items', hasLength(3)));
+            isA<Feed>().having((f) => f.posts, 'posts', hasLength(3)));
       });
     });
   });

@@ -7,9 +7,11 @@ part of 'feed.dart';
 // **************************************************************************
 
 Feed _$FeedFromJson(Map<String, dynamic> json) => Feed(
-      (json['items'] as List<dynamic>).map((e) => e as String).toList(),
+      (json['posts'] as List<dynamic>)
+          .map((e) => Authorperm.fromJson(e as Map<String, dynamic>))
+          .toList(),
     );
 
 Map<String, dynamic> _$FeedToJson(Feed instance) => <String, dynamic>{
-      'items': instance.items,
+      'posts': instance.posts.map((e) => e.toJson()).toList(),
     };
