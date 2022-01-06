@@ -23,4 +23,7 @@ class Authorperm extends Equatable {
 
   @override
   List<Object?> get props => [author, permlink];
+
+  @override
+  String toString() => '@$author/$permlink';
 }
