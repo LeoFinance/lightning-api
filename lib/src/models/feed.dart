@@ -16,7 +16,7 @@ class Feed extends Equatable {
   bool get isEmpty => posts.isEmpty;
   bool get isNotEmpty => posts.isNotEmpty;
 
-  Authorperm operator [](int index) => Authorperm.parse(posts[index]);
+  String operator [](int index) => posts[index];
 
   // factory Feed.fromJson(List<dynamic> json) {
   //   return Feed(json
