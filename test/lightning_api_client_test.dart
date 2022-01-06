@@ -27,7 +27,7 @@ void main() {
     });
 
     group('getPost', () {
-      const authorperm = '@cwow2/selling-my-hive-goodbye';
+      const authorperm = Authorperm('cwow2', 'selling-my-hive-goodbye');
       final lightningUri =
           Uri.https('alpha.leofinance.io', '/lightning/posts/$authorperm');
 
