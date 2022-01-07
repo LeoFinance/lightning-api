@@ -1,15 +1,15 @@
 import 'package:equatable/equatable.dart';
 import 'package:json_annotation/json_annotation.dart';
 
-import 'models.dart';
-
 part 'feed.g.dart';
 
 @JsonSerializable(explicitToJson: true)
 class Feed extends Equatable {
+  final String tag;
+  final String sort;
   final List<String> posts;
 
-  Feed(this.posts);
+  Feed({required this.tag, required this.sort, required this.posts});
 
   int get length => posts.length;
 
@@ -38,7 +38,7 @@ class Feed extends Equatable {
   Map<String, dynamic> toJson() => _$FeedToJson(this);
 
   @override
-  List<Object> get props => [posts];
+  List<Object> get props => [tag, sort, posts];
 
   @override
   String toString() => 'Feed: $posts';

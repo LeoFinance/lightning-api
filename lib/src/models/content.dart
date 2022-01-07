@@ -106,4 +106,7 @@ class Content {
   }
 
   Map<String, dynamic> toJson() => _$ContentToJson(this);
+
+  @override
+  String toString() => 'Content $title ($authorperm)';
 }

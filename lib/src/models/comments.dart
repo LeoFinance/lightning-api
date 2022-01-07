@@ -38,7 +38,7 @@ class Comments {
   }
 
   @override
-  String toString() => 'Comments on $parent: [${items.length}] (${children})';
+  String toString() => 'Comments on $parent: $children';
 
   factory Comments.fromJson(Map<String, dynamic> json) {
     try {
