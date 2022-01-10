@@ -12,8 +12,9 @@ class LightningApiClient {
   LightningApiClient({http.Client? httpClient})
       : _httpClient = httpClient ?? http.Client();
 
-  Future<Content> getContent(Authorperm authorperm) async {
-    final uri = Uri.https(_baseUrl, '/lightning/content/$authorperm');
+  Future<Content> getContent(Authorperm authorperm, {bool? forceLatest}) async {
+    final uri = Uri.https(_baseUrl, '/lightning/content/$authorperm',
+        forceLatest != null ? {'latest': forceLatest == true ? 1 : 0} : null);
 
     final postResponse = await _httpClient.get(uri);
 
@@ -41,8 +42,10 @@ class LightningApiClient {
     }
   }
 
-  Future<Comments> getComments(Authorperm authorperm) async {
-    final uri = Uri.https(_baseUrl, '/lightning/comments/$authorperm');
+  Future<Comments> getComments(Authorperm authorperm,
+      {bool? forceLatest}) async {
+    final uri = Uri.https(_baseUrl, '/lightning/comments/$authorperm',
+        forceLatest != null ? {'latest': forceLatest == true ? 1 : 0} : null);
 
     final postResponse = await _httpClient.get(uri);
 
