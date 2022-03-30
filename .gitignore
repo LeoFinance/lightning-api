@@ -31,6 +31,9 @@
 build/
 coverage/
 
+# For library packages, don’t commit the pubspec.lock file.
+pubspec.lock
+
 # Android related
 **/android/**/gradle-wrapper.jar
 **/android/.gradle
