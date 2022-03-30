@@ -9,7 +9,7 @@ class Feed extends Equatable {
   final String sort;
   final List<String> posts;
 
-  Feed({required this.tag, required this.sort, required this.posts});
+  const Feed({required this.tag, required this.sort, required this.posts});
 
   int get length => posts.length;
 

@@ -121,6 +121,7 @@ class LightningApiClient {
 
     final uri = Uri.https(_baseUrl, '/lightning/feeds/$tag/$sort',
         queryParameters.isNotEmpty ? queryParameters : null);
+    print(uri);
     final postResponse = await _httpClient.get(uri);
 
     if (postResponse.statusCode != 200) {

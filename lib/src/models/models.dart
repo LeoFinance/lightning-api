@@ -1,4 +1,4 @@
-export 'package:hive_bridge_api/hive_bridge_api.dart'
+export 'package:hive_api/hive_api.dart'
     show
         PostStats,
         ProfileStats,
