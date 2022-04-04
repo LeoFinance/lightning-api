@@ -1,20 +1,20 @@
 // GENERATED CODE - DO NOT MODIFY BY HAND
 
-part of 'content.dart';
+part of 'comment.dart';
 
 // **************************************************************************
 // JsonSerializableGenerator
 // **************************************************************************
 
-Content _$ContentFromJson(Map<String, dynamic> json) => Content(
+Comment _$CommentFromJson(Map<String, dynamic> json) => Comment(
       id: json['id'] as int,
       author: json['author'] as String,
       permlink: json['permlink'] as String,
       category: json['category'] as String,
       title: json['title'] as String,
       body: json['body'] as String,
-      parentAuthor: json['parent_author'] as String?,
-      parentPermlink: json['parent_permlink'] as String?,
+      parentAuthor: json['parent_author'] as String,
+      parentPermlink: json['parent_permlink'] as String,
       depth: json['depth'] as int? ?? 0,
       jsonMetadata:
           JsonMetadata.fromJson(json['json_metadata'] as Map<String, dynamic>),
@@ -53,7 +53,7 @@ Content _$ContentFromJson(Map<String, dynamic> json) => Content(
       ),
     );
 
-Map<String, dynamic> _$ContentToJson(Content instance) => <String, dynamic>{
+Map<String, dynamic> _$CommentToJson(Comment instance) => <String, dynamic>{
       'id': instance.id,
       'author': instance.author,
       'permlink': instance.permlink,

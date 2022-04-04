@@ -2,10 +2,10 @@ import 'package:json_annotation/json_annotation.dart';
 
 import 'models.dart';
 
-part 'content.g.dart';
+part 'post.g.dart';
 
 @JsonSerializable(fieldRename: FieldRename.snake, explicitToJson: true)
-class Content {
+class Post {
   final int id;
 
   final String author;
@@ -13,10 +13,6 @@ class Content {
   final String category;
   final String title;
   final String body;
-
-  final String? parentAuthor;
-  final String? parentPermlink;
-  final int depth;
 
   final JsonMetadata jsonMetadata;
 
@@ -50,16 +46,13 @@ class Content {
   final Map<String, double> tribeUpvotes;
   final Map<String, double> tribeDownvotes;
 
-  Content(
+  Post(
       {required this.id,
       required this.author,
       required this.permlink,
       required this.category,
       required this.title,
       required this.body,
-      this.parentAuthor,
-      this.parentPermlink,
-      this.depth = 0,
       required this.jsonMetadata,
       required this.created,
       required this.updated,
@@ -95,9 +88,9 @@ class Content {
   bool tribeDidDownvote(String? username) =>
       tribeDownvotes.containsKey(username);
 
-  factory Content.fromJson(Map<String, dynamic> json) {
+  factory Post.fromJson(Map<String, dynamic> json) {
     try {
-      return _$ContentFromJson(json);
+      return _$PostFromJson(json);
     } catch (e, s) {
       print('Failed parsing content $e');
       print(s);
@@ -105,7 +98,7 @@ class Content {
     }
   }
 
-  Map<String, dynamic> toJson() => _$ContentToJson(this);
+  Map<String, dynamic> toJson() => _$PostToJson(this);
 
   @override
   String toString() => 'Content $title ($authorperm)';

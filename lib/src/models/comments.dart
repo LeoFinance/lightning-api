@@ -8,7 +8,7 @@ part 'comments.g.dart';
 class Comments {
   final Authorperm parent;
 
-  final Map<String, Content> items;
+  final Map<String, Comment> items;
 
   /// A map of authorperms to the children of each piece of content
   final Map<String, List<String>> children;
@@ -19,17 +19,17 @@ class Comments {
   bool get isEmpty => items.isEmpty;
   bool get isNotEmpty => items.isNotEmpty;
   int get length => items.length;
-  Content? operator [](String authorperm) => items[authorperm];
+  Comment? operator [](String authorperm) => items[authorperm];
 
-  List<Content>? childrenOf(Authorperm postId) =>
+  List<Comment>? childrenOf(Authorperm postId) =>
       children[postId.toString()]?.map((ap) => items[ap]!).toList();
 
   // TODO remove the ?? const [] if it can't actually happen
-  List<Content> get rootReplies => childrenOf(parent) ?? const [];
+  List<Comment> get rootReplies => childrenOf(parent) ?? const [];
 
   Comments copyWith(
       {Authorperm? parent,
-      Map<String, Content>? items,
+      Map<String, Comment>? items,
       Map<String, List<String>>? children}) {
     return Comments(
         parent: parent ?? this.parent,

@@ -12,8 +12,8 @@ void main() {
             .then(jsonDecode);
 
         expect(
-            Content.fromJson(json),
-            isA<Content>().having((c) => c.beneficiaries, 'beneficiaries',
+            Post.fromJson(json),
+            isA<Post>().having((c) => c.beneficiaries, 'beneficiaries',
                 [Beneficiary(account: 'archon-gov', weight: 500)]));
       });
 
@@ -23,8 +23,8 @@ void main() {
             .then(jsonDecode);
         json["beneficiaries"] = [];
 
-        expect(Content.fromJson(json),
-            isA<Content>().having((c) => c.beneficiaries, 'beneficiaries', []));
+        expect(Post.fromJson(json),
+            isA<Post>().having((c) => c.beneficiaries, 'beneficiaries', []));
       });
     });
   });

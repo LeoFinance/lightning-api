@@ -9,8 +9,9 @@ export 'package:hive_api/hive_api.dart'
 
 export 'account.dart';
 export 'authorperm.dart';
+export 'comment.dart';
 export 'comments.dart';
-export 'content.dart';
+export 'post.dart';
 export 'feed.dart';
 export 'manabar.dart';
 export 'profile.dart';

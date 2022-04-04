@@ -12,6 +12,7 @@ dependencies:
   json_annotation: ^4.1.0
   hive_api:
     path: ../hive_api
+  rxdart: ^0.27.3
   scot_api:
     path: ../scot_api
 
