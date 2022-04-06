@@ -2,6 +2,7 @@ import 'dart:async';
 import 'dart:convert';
 
 import 'package:http/http.dart' as http;
+import 'package:rxdart/streams.dart';
 import 'package:rxdart/subjects.dart';
 import '../lightning_api.dart';
 
@@ -9,6 +10,8 @@ class LightningApiClient {
   static const _baseUrl = 'beta.leofinance.io';
   final http.Client _httpClient;
 
+  // TODO We could just have a single stream for each of these, and then
+  // return it with a filter
   final _feedStreamControllers = Map<String, BehaviorSubject<Feed>>();
   final _postStreamControllers = Map<Authorperm, BehaviorSubject<Post>>();
   final _commentsStreamControllers =
@@ -119,7 +122,7 @@ class LightningApiClient {
     return Feed.fromJson(bodyJson);
   }
 
-  Stream<Post> getPost(Authorperm id) {
+  ValueStream<Post> getPost(Authorperm id) {
     final BehaviorSubject<Post> controller;
     if (_postStreamControllers.containsKey(id)) {
       controller = _postStreamControllers[id]!;
@@ -130,7 +133,7 @@ class LightningApiClient {
       unawaited(_fetchAndAddPost(id));
     }
 
-    return controller.asBroadcastStream();
+    return controller;
   }
 
   Future<void> _fetchAndAddPost(Authorperm id) async {
@@ -186,7 +189,7 @@ class LightningApiClient {
     unawaited(_fetchAndAddPost(id));
   }
 
-  Stream<Comments> getComments(Authorperm id) {
+  ValueStream<Comments> getComments(Authorperm id) {
     final BehaviorSubject<Comments> controller;
     if (_commentsStreamControllers.containsKey(id)) {
       controller = _commentsStreamControllers[id]!;
@@ -197,7 +200,7 @@ class LightningApiClient {
       unawaited(_fetchAndAddComments(id));
     }
 
-    return controller.asBroadcastStream();
+    return controller;
   }
 
   Future<void> _fetchAndAddComments(Authorperm id) async {
