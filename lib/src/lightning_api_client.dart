@@ -27,8 +27,7 @@ class LightningApiClient {
     if (_feedStreamControllers.containsKey(key)) {
       controller = _feedStreamControllers[key]!;
     } else {
-      controller = BehaviorSubject<Feed>.seeded(
-          Feed(tag: tag, sort: sort, posts: const []));
+      controller = BehaviorSubject<Feed>();
       _feedStreamControllers[key] = controller;
 
       unawaited(_fetchAndAddFeed(tag: tag, sort: sort));
