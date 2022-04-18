@@ -154,15 +154,17 @@ class MockLightningApiClient extends _i1.Mock
   }
 
   @override
-  _i6.Stream<_i10.Feed> getFeed({String? tag, String? sort}) => (super
-      .noSuchMethod(Invocation.method(#getFeed, [], {#tag: tag, #sort: sort}),
+  _i6.Stream<_i10.Feed> getFeed({String? tag, _i10.FeedSortOrder? sort}) =>
+      (super.noSuchMethod(
+          Invocation.method(#getFeed, [], {#tag: tag, #sort: sort}),
           returnValue: Stream<_i10.Feed>.empty()) as _i6.Stream<_i10.Feed>);
   @override
-  void refreshFeed({String? tag, String? sort}) => super.noSuchMethod(
-      Invocation.method(#refreshFeed, [], {#tag: tag, #sort: sort}),
-      returnValueForMissingStub: null);
+  void refreshFeed({String? tag, _i10.FeedSortOrder? sort}) =>
+      super.noSuchMethod(
+          Invocation.method(#refreshFeed, [], {#tag: tag, #sort: sort}),
+          returnValueForMissingStub: null);
   @override
-  void expandFeed({String? tag, String? sort, int? amount = 20}) =>
+  void expandFeed({String? tag, _i10.FeedSortOrder? sort, int? amount = 20}) =>
       super.noSuchMethod(
           Invocation.method(
               #expandFeed, [], {#tag: tag, #sort: sort, #amount: amount}),

@@ -6,6 +6,8 @@ import 'package:rxdart/streams.dart';
 import 'package:rxdart/subjects.dart';
 import '../lightning_api.dart';
 
+enum FeedSortOrder { curated, created, trending, promoted, hot, blog, feed }
+
 class LightningApiClient {
   static const _baseUrl = 'beta.leofinance.io';
   final http.Client _httpClient;
@@ -21,8 +23,8 @@ class LightningApiClient {
   LightningApiClient({http.Client? httpClient})
       : _httpClient = httpClient ?? http.Client();
 
-  Stream<Feed> getFeed({required String tag, required String sort}) {
-    final key = _getKey(tag, sort);
+  Stream<Feed> getFeed({required String tag, required FeedSortOrder sort}) {
+    final key = _getKey(tag, sort.name);
     final BehaviorSubject<Feed> controller;
     if (_feedStreamControllers.containsKey(key)) {
       controller = _feedStreamControllers[key]!;
@@ -40,10 +42,10 @@ class LightningApiClient {
 
   Future<void> _fetchAndAddFeed(
       {required String tag,
-      required String sort,
+      required FeedSortOrder sort,
       int? start,
       int? limit}) async {
-    final key = _getKey(tag, sort);
+    final key = _getKey(tag, sort.name);
 
     assert(_feedStreamControllers.containsKey(key));
 
@@ -56,8 +58,8 @@ class LightningApiClient {
   }
 
   /// Refresh the feed and add it to the stream
-  void refreshFeed({required String tag, required String sort}) async {
-    final key = _getKey(tag, sort);
+  void refreshFeed({required String tag, required FeedSortOrder sort}) async {
+    final key = _getKey(tag, sort.name);
     if (!_feedStreamControllers.containsKey(key)) {
       throw NotFoundFailure('Feed not found');
     }
@@ -67,8 +69,10 @@ class LightningApiClient {
 
   /// Expand the feed and add it to the stream
   void expandFeed(
-      {required String tag, required String sort, int amount = 20}) async {
-    final key = _getKey(tag, sort);
+      {required String tag,
+      required FeedSortOrder sort,
+      int amount = 20}) async {
+    final key = _getKey(tag, sort.name);
     if (!_feedStreamControllers.containsKey(key)) {
       throw NotFoundFailure('Feed not found');
     }
@@ -95,21 +99,21 @@ class LightningApiClient {
 
   Future<Feed> _fetchFeed(
       {required String tag,
-      required String sort,
+      required FeedSortOrder sort,
       int? start,
       int? limit}) async {
     final queryParameters = <String, String>{};
     if (start != null) queryParameters['start'] = start.toString();
     if (limit != null) queryParameters['limit'] = limit.toString();
 
-    final uri = Uri.https(_baseUrl, '/lightning/feeds/$tag/$sort',
+    final uri = Uri.https(_baseUrl, '/lightning/feeds/$tag/${sort.name}',
         queryParameters.isNotEmpty ? queryParameters : null);
     print(uri);
     final postResponse = await _httpClient.get(uri);
 
     if (postResponse.statusCode != 200) {
       if (postResponse.statusCode == 404) {
-        throw NotFoundFailure('Could not find feed $tag/$sort');
+        throw NotFoundFailure('Could not find feed $tag/${sort.name}');
       } else {
         print('Received HTTP ${postResponse.statusCode} calling $uri');
         throw ContentRequestFailure(statusCode: postResponse.statusCode);
