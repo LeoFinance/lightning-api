@@ -13,6 +13,9 @@ class SearchResults extends Equatable {
   const SearchResults(this.numResults, this.results, {required this.query});
 
   @override
+  bool get stringify => true;
+
+  @override
   List<Object?> get props => [results, numResults, query];
 
   factory SearchResults.fromJson(Map<String, dynamic> json) =>
@@ -32,6 +35,9 @@ class SearchResult extends Equatable {
 
   @override
   List<Object?> get props => [authorperm, score, summary];
+
+  @override
+  bool get stringify => true;
 
   factory SearchResult.fromJson(Map<String, dynamic> json) =>
       _$SearchResultFromJson(json);
