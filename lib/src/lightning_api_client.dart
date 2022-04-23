@@ -269,7 +269,9 @@ class LightningApiClient {
       throw ContentRequestFailure(statusCode: searchResult.statusCode);
     }
 
-    return jsonDecode(searchResult.body) as SearchResults;
+    final bodyJson = jsonDecode(searchResult.body) as Map<String, dynamic>;
+
+    return SearchResults.fromJson(bodyJson);
   }
 
   // Future<Excerpt> getExcerpt(id) async {
