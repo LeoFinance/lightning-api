@@ -259,9 +259,15 @@ class LightningApiClient {
     unawaited(_fetchAndAddComments(id));
   }
 
-  Future<SearchResults> search(String query, {int? limit}) async {
-    final uri = Uri.https(_baseUrl, '/lightning/search',
-        limit != null ? {'limit': limit, 'q': query} : {'q': query});
+  Future<SearchResults> search(String query, {int? start, int? limit}) async {
+    final params = {'q': query};
+    if (start != null) {
+      params['start'] = start.toString();
+    }
+    if (limit != null) {
+      params['limit'] = limit.toString();
+    }
+    final uri = Uri.https(_baseUrl, '/lightning/search', params);
 
     final searchResult = await _httpClient.get(uri);
 

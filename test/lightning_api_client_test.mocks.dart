@@ -189,9 +189,11 @@ class MockLightningApiClient extends _i1.Mock
       super.noSuchMethod(Invocation.method(#refreshComments, [id]),
           returnValueForMissingStub: null);
   @override
-  _i7.Future<_i5.SearchResults> search(String? query, {int? limit}) =>
-      (super.noSuchMethod(Invocation.method(#search, [query], {#limit: limit}),
-              returnValue:
-                  Future<_i5.SearchResults>.value(_FakeSearchResults_3()))
-          as _i7.Future<_i5.SearchResults>);
+  _i7.Future<_i5.SearchResults> search(String? query,
+          {int? start, int? limit}) =>
+      (super.noSuchMethod(
+          Invocation.method(#search, [query], {#start: start, #limit: limit}),
+          returnValue:
+              Future<_i5.SearchResults>.value(_FakeSearchResults_3())) as _i7
+          .Future<_i5.SearchResults>);
 }
