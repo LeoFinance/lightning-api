@@ -16,7 +16,7 @@ class SearchResults extends Equatable {
   bool get stringify => true;
 
   @override
-  List<Object?> get props => [results, numResults, query];
+  List<Object?> get props => [query, numResults, results];
 
   factory SearchResults.fromJson(Map<String, dynamic> json) =>
       _$SearchResultsFromJson(json);
@@ -34,7 +34,7 @@ class SearchResult extends Equatable {
       {required this.score, required this.summary});
 
   @override
-  List<Object?> get props => [authorperm, score, summary];
+  List<Object?> get props => [authorperm, score];
 
   @override
   bool get stringify => true;
