@@ -259,6 +259,19 @@ class LightningApiClient {
     unawaited(_fetchAndAddComments(id));
   }
 
+  Future<SearchResults> search(String query, {int? limit}) async {
+    final uri = Uri.https(_baseUrl, '/lightning/search',
+        limit != null ? {'limit': limit, 'q': query} : {'q': query});
+
+    final searchResult = await _httpClient.get(uri);
+
+    if (searchResult.statusCode != 200) {
+      throw ContentRequestFailure(statusCode: searchResult.statusCode);
+    }
+
+    return jsonDecode(searchResult.body) as SearchResults;
+  }
+
   // Future<Excerpt> getExcerpt(id) async {
   //   final uri = Uri.https(_baseUrl, '/lightning/excerpts/$id');
 

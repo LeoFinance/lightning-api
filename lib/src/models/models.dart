@@ -15,3 +15,4 @@ export 'post.dart';
 export 'feed.dart';
 export 'manabar.dart';
 export 'profile.dart';
+export 'search_results.dart';
