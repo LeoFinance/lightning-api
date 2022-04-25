@@ -4,13 +4,16 @@ import 'models.dart';
 
 part 'comments.g.dart';
 
+/// A set of all the comments for a specific piece of content.
 @JsonSerializable(fieldRename: FieldRename.snake, explicitToJson: true)
 class Comments {
+  /// The parent of these comments; this could be a post or a comment itself.
   final Authorperm parent;
 
+  /// A map of authorperms of comments to the Comment object
   final Map<String, Comment> items;
 
-  /// A map of authorperms to the children of each piece of content
+  /// A map of authorperms to the authorperms of its children
   final Map<String, List<String>> children;
 
   const Comments(
@@ -20,6 +23,8 @@ class Comments {
   bool get isNotEmpty => items.isNotEmpty;
   int get length => items.length;
   Comment? operator [](String authorperm) => items[authorperm];
+
+  bool containsComment(Authorperm id) => items.containsKey(id.toString());
 
   List<Comment>? childrenOf(Authorperm postId) =>
       children[postId.toString()]?.map((ap) => items[ap]!).toList();

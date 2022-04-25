@@ -11,6 +11,7 @@ export 'account.dart';
 export 'authorperm.dart';
 export 'comment.dart';
 export 'comments.dart';
+export 'content.dart';
 export 'post.dart';
 export 'feed.dart';
 export 'manabar.dart';

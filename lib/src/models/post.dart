@@ -5,80 +5,74 @@ import 'models.dart';
 part 'post.g.dart';
 
 @JsonSerializable(fieldRename: FieldRename.snake, explicitToJson: true)
-class Post {
-  final int id;
-
-  final String author;
-  final String permlink;
-  final String category;
-  final String title;
-  final String body;
-
-  final JsonMetadata jsonMetadata;
-
-  final DateTime created;
-  final DateTime? updated;
-
-  final int numChildren;
-
-  final int netRshares;
-
-  final double authorReputation;
-  final PostStats stats;
-  final String url;
-  final List<Beneficiary> beneficiaries;
-  final String maxAcceptedPayout;
-  final String? community;
-  final String? communityTitle;
-  final int tribePendingToken;
-  final int tribePrecision;
-  final String tribeToken;
-  final bool tribeIsMuted;
-  final double tribeScoreHot;
-  final double tribeScorePromoted;
-  final double tribeScoreTrend;
-  final int tribeTotalPayoutValue;
-  final int tribeTotalVoteWeight;
-  final int tribeVoteRshares;
-
-  final Map<String, int> upvotes;
-  final Map<String, int> downvotes;
-  final Map<String, double> tribeUpvotes;
-  final Map<String, double> tribeDownvotes;
-
+class Post extends Content {
   Post(
-      {required this.id,
-      required this.author,
-      required this.permlink,
-      required this.category,
-      required this.title,
-      required this.body,
-      required this.jsonMetadata,
-      required this.created,
-      required this.updated,
-      required this.numChildren,
-      required this.netRshares,
-      required this.authorReputation,
-      required this.stats,
-      required this.url,
-      required this.beneficiaries,
-      required this.maxAcceptedPayout,
-      required this.upvotes,
-      required this.downvotes,
-      this.community = '',
-      this.communityTitle = '',
-      required this.tribePendingToken,
-      required this.tribePrecision,
-      required this.tribeToken,
-      required this.tribeIsMuted,
-      required this.tribeScoreHot,
-      required this.tribeScorePromoted,
-      required this.tribeScoreTrend,
-      required this.tribeTotalPayoutValue,
-      required this.tribeTotalVoteWeight,
-      required this.tribeVoteRshares,
-      required this.tribeUpvotes,
-      required this.tribeDownvotes});
+      {required int id,
+      required String author,
+      required String permlink,
+      required String category,
+      required String title,
+      required String body,
+      required JsonMetadata jsonMetadata,
+      required DateTime created,
+      required DateTime updated,
+      required int numChildren,
+      required int netRshares,
+      required double authorReputation,
+      required PostStats stats,
+      required String url,
+      required List<Beneficiary> beneficiaries,
+      required String maxAcceptedPayout,
+      required Map<String, int> upvotes,
+      required Map<String, int> downvotes,
+      String community = '',
+      String communityTitle = '',
+      required int tribePendingToken,
+      required int tribePrecision,
+      required String tribeToken,
+      required bool tribeIsMuted,
+      required double tribeScoreHot,
+      required double tribeScorePromoted,
+      required double tribeScoreTrend,
+      required int tribeTotalPayoutValue,
+      required int tribeTotalVoteWeight,
+      required int tribeVoteRshares,
+      required Map<String, double> tribeUpvotes,
+      required Map<String, double> tribeDownvotes})
+      : super(
+            id: id,
+            author: author,
+            permlink: permlink,
+            category: category,
+            title: title,
+            body: body,
+            jsonMetadata: jsonMetadata,
+            depth: 0,
+            created: created,
+            updated: updated,
+            numChildren: numChildren,
+            netRshares: netRshares,
+            authorReputation: authorReputation,
+            stats: stats,
+            url: url,
+            beneficiaries: beneficiaries,
+            maxAcceptedPayout: maxAcceptedPayout,
+            upvotes: upvotes,
+            downvotes: downvotes,
+            tribePendingToken: tribePendingToken,
+            tribePrecision: tribePrecision,
+            tribeToken: tribeToken,
+            tribeIsMuted: tribeIsMuted,
+            tribeScoreHot: tribeScoreHot,
+            tribeScorePromoted: tribeScorePromoted,
+            tribeScoreTrend: tribeScoreTrend,
+            tribeTotalPayoutValue: tribeTotalPayoutValue,
+            tribeTotalVoteWeight: tribeTotalVoteWeight,
+            tribeVoteRshares: tribeVoteRshares,
+            community: community,
+            communityTitle: communityTitle,
+            tribeUpvotes: tribeUpvotes,
+            tribeDownvotes: tribeDownvotes);
 
   Authorperm get authorperm => Authorperm(author, permlink);
 

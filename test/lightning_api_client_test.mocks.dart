@@ -176,12 +176,13 @@ class MockLightningApiClient extends _i1.Mock
               returnValue: _FakeValueStream_2<_i5.Post>())
           as _i4.ValueStream<_i5.Post>);
   @override
-  void refreshPost(_i5.Authorperm? id) =>
-      super.noSuchMethod(Invocation.method(#refreshPost, [id]),
-          returnValueForMissingStub: null);
+  _i7.Future<void> refreshPost(_i5.Authorperm? id) =>
+      (super.noSuchMethod(Invocation.method(#refreshPost, [id]),
+          returnValue: Future<void>.value(),
+          returnValueForMissingStub: Future<void>.value()) as _i7.Future<void>);
   @override
-  _i4.ValueStream<_i5.Comments> getComments(_i5.Authorperm? id) =>
-      (super.noSuchMethod(Invocation.method(#getComments, [id]),
+  _i4.ValueStream<_i5.Comments> getComments(_i5.Authorperm? postId) =>
+      (super.noSuchMethod(Invocation.method(#getComments, [postId]),
               returnValue: _FakeValueStream_2<_i5.Comments>())
           as _i4.ValueStream<_i5.Comments>);
   @override

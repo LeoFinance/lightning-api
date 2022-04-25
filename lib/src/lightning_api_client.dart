@@ -16,6 +16,9 @@ class LightningApiClient {
   // return it with a filter
   final _feedStreamControllers = Map<String, BehaviorSubject<Feed>>();
   final _postStreamControllers = Map<Authorperm, BehaviorSubject<Post>>();
+
+  // TODO Does this contain only top-level authorperms or comments of comments?
+  // Ideally it contains only post (top-level) authorperms
   final _commentsStreamControllers =
       Map<Authorperm, BehaviorSubject<Comments>>();
 
@@ -108,7 +111,7 @@ class LightningApiClient {
 
     final uri = Uri.https(_baseUrl, '/lightning/feeds/$tag/${sort.name}',
         queryParameters.isNotEmpty ? queryParameters : null);
-    print(uri);
+    print('fetchFeed: $uri');
     final postResponse = await _httpClient.get(uri);
 
     if (postResponse.statusCode != 200) {
@@ -139,11 +142,13 @@ class LightningApiClient {
     return controller;
   }
 
-  Future<void> _fetchAndAddPost(Authorperm id) async {
+  Future<void> _fetchAndAddPost(Authorperm id,
+      {bool? forceLatest = false}) async {
     assert(_postStreamControllers.containsKey(id));
 
     try {
-      _postStreamControllers[id]!.add(await _fetchPost(id));
+      _postStreamControllers[id]!
+          .add(await _fetchPost(id, forceLatest: forceLatest));
     } catch (e, s) {
       _postStreamControllers[id]!.addError(e, s);
     }
@@ -157,6 +162,7 @@ class LightningApiClient {
             ? {'latest': forceLatest == true ? '1' : '0'}
             : null);
 
+    print('fetchPost: $uri');
     final postResponse = await _httpClient.get(uri);
 
     if (postResponse.statusCode != 200) {
@@ -184,33 +190,35 @@ class LightningApiClient {
   }
 
   /// Refresh the post and add it to the stream
-  void refreshPost(Authorperm id) async {
+  Future<void> refreshPost(Authorperm id) async {
     if (!_postStreamControllers.containsKey(id)) {
       throw NotFoundFailure('Post not found');
     }
 
-    unawaited(_fetchAndAddPost(id));
+    return _fetchAndAddPost(id, forceLatest: true);
   }
 
-  ValueStream<Comments> getComments(Authorperm id) {
+  ValueStream<Comments> getComments(Authorperm postId) {
     final BehaviorSubject<Comments> controller;
-    if (_commentsStreamControllers.containsKey(id)) {
-      controller = _commentsStreamControllers[id]!;
+    if (_commentsStreamControllers.containsKey(postId)) {
+      controller = _commentsStreamControllers[postId]!;
     } else {
       controller = BehaviorSubject<Comments>();
-      _commentsStreamControllers[id] = controller;
+      _commentsStreamControllers[postId] = controller;
 
-      unawaited(_fetchAndAddComments(id));
+      unawaited(_fetchAndAddComments(postId));
     }
 
     return controller;
   }
 
-  Future<void> _fetchAndAddComments(Authorperm id) async {
+  Future<void> _fetchAndAddComments(Authorperm id,
+      {bool? forceLatest = false}) async {
     assert(_commentsStreamControllers.containsKey(id));
 
     try {
-      _commentsStreamControllers[id]!.add(await _fetchComments(id));
+      _commentsStreamControllers[id]!
+          .add(await _fetchComments(id, forceLatest: forceLatest));
     } catch (e, s) {
       _feedStreamControllers[id]!.addError(e, s);
     }
@@ -224,6 +232,7 @@ class LightningApiClient {
             ? {'latest': forceLatest == true ? '1' : '0'}
             : null);
 
+    print('fetchComments: $uri');
     final postResponse = await _httpClient.get(uri);
 
     if (postResponse.statusCode != 200) {
@@ -256,8 +265,16 @@ class LightningApiClient {
       throw NotFoundFailure('Comments not found');
     }
 
-    unawaited(_fetchAndAddComments(id));
+    unawaited(_fetchAndAddComments(id, forceLatest: true));
   }
+
+  // /// Find and return the id of the post which contains the given comment.
+  // Authorperm findPostIdForComment(Authorperm id) {
+  //   return _commentsStreamControllers.values
+  //       .firstWhere((s) => s.value.containsComment(id))
+  //       .value
+  //       .parent;
+  // }
 
   Future<SearchResults> search(String query, {int? start, int? limit}) async {
     final params = {'q': query};
@@ -269,6 +286,7 @@ class LightningApiClient {
     }
     final uri = Uri.https(_baseUrl, '/lightning/search', params);
 
+    print('search: $uri');
     final searchResult = await _httpClient.get(uri);
 
     if (searchResult.statusCode != 200) {
