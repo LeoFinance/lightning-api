@@ -2,29 +2,23 @@ import 'dart:async';
 import 'dart:convert';
 
 import 'package:http/http.dart' as http;
+import 'package:lightning_api/lightning_api.dart';
 import 'package:rxdart/streams.dart';
 import 'package:rxdart/subjects.dart';
-import '../lightning_api.dart';
 
 enum FeedSortOrder { curated, created, trending, promoted, hot, blog, feed }
 
 class LightningApiClient {
-  static const _baseUrl = 'beta.leofinance.io';
-  final http.Client _httpClient;
-
-  // TODO We could just have a single stream for each of these, and then
-  // return it with a filter
-  final _feedStreamControllers = Map<String, BehaviorSubject<Feed>>();
-  final _postStreamControllers = Map<Authorperm, BehaviorSubject<Post>>();
-
-  // TODO Does this contain only top-level authorperms or comments of comments?
-  // Ideally it contains only post (top-level) authorperms
-  final _commentsStreamControllers =
-      Map<Authorperm, BehaviorSubject<Comments>>();
-
   /// {@macro lightning_api_client}
-  LightningApiClient({http.Client? httpClient})
-      : _httpClient = httpClient ?? http.Client();
+  LightningApiClient({this.httpClient});
+
+  final http.Client? httpClient;
+  static const _baseUrl = 'beta.leofinance.io';
+
+  final _feedStreamControllers = <String, BehaviorSubject<Feed>>{};
+  final _postStreamControllers = <Authorperm, BehaviorSubject<Post>>{};
+
+  final _commentsStreamControllers = <Authorperm, BehaviorSubject<Comments>>{};
 
   Stream<Feed> getFeed({required String tag, required FeedSortOrder sort}) {
     final key = _getKey(tag, sort.name);
@@ -43,51 +37,60 @@ class LightningApiClient {
 
   String _getKey(String tag, String sort) => '$tag:$sort';
 
-  Future<void> _fetchAndAddFeed(
-      {required String tag,
-      required FeedSortOrder sort,
-      int? start,
-      int? limit}) async {
+  Future<void> _fetchAndAddFeed({
+    required String tag,
+    required FeedSortOrder sort,
+    int? start,
+    int? limit,
+  }) async {
     final key = _getKey(tag, sort.name);
 
-    assert(_feedStreamControllers.containsKey(key));
+    assert(_feedStreamControllers.containsKey(key), 'Missing key $key');
 
     try {
       _feedStreamControllers[key]!.add(
-          await _fetchFeed(tag: tag, sort: sort, start: start, limit: limit));
+        await _fetchFeed(tag: tag, sort: sort, start: start, limit: limit),
+      );
     } catch (e, s) {
       _feedStreamControllers[key]!.addError(e, s);
     }
   }
 
   /// Refresh the feed and add it to the stream
-  void refreshFeed({required String tag, required FeedSortOrder sort}) async {
+  Future<void> refreshFeed({
+    required String tag,
+    required FeedSortOrder sort,
+  }) async {
     final key = _getKey(tag, sort.name);
     if (!_feedStreamControllers.containsKey(key)) {
-      throw NotFoundFailure('Feed not found');
+      throw const NotFoundFailure('Feed not found');
     }
 
     unawaited(_fetchAndAddFeed(tag: tag, sort: sort));
   }
 
   /// Expand the feed and add it to the stream
-  void expandFeed(
-      {required String tag,
-      required FeedSortOrder sort,
-      int amount = 20}) async {
+  Future<void> expandFeed({
+    required String tag,
+    required FeedSortOrder sort,
+    int amount = 20,
+  }) async {
     final key = _getKey(tag, sort.name);
     if (!_feedStreamControllers.containsKey(key)) {
-      throw NotFoundFailure('Feed not found');
+      throw const NotFoundFailure('Feed not found');
     }
 
     final curFeed = _feedStreamControllers[key]!.value;
 
-    unawaited(_fetchAndAddFeed(
+    unawaited(
+      _fetchAndAddFeed(
         tag: tag,
         sort: sort,
-        start: 0, // TODO Only get the items to expand
+        start: 0, // FIXME Only get the items to expand
         // start: curFeed.length >= 2 ? curFeed.length - 2 : 0,
-        limit: curFeed.length + amount));
+        limit: curFeed.length + amount,
+      ),
+    );
 
     // var lastDuplicate = feed.posts.indexOf(newFeed[0]);
     // if (lastDuplicate == -1) {
@@ -100,32 +103,40 @@ class LightningApiClient {
     //     posts: [...feed.posts.getRange(0, lastDuplicate), ...newFeed.posts]);
   }
 
-  Future<Feed> _fetchFeed(
-      {required String tag,
-      required FeedSortOrder sort,
-      int? start,
-      int? limit}) async {
+  Future<Feed> _fetchFeed({
+    required String tag,
+    required FeedSortOrder sort,
+    int? start,
+    int? limit,
+  }) async {
     final queryParameters = <String, String>{};
     if (start != null) queryParameters['start'] = start.toString();
     if (limit != null) queryParameters['limit'] = limit.toString();
 
-    final uri = Uri.https(_baseUrl, '/lightning/feeds/$tag/${sort.name}',
-        queryParameters.isNotEmpty ? queryParameters : null);
-    print('fetchFeed: $uri');
-    final postResponse = await _httpClient.get(uri);
+    final uri = Uri.https(
+      _baseUrl,
+      '/lightning/feeds/$tag/${sort.name}',
+      queryParameters.isNotEmpty ? queryParameters : null,
+    );
+    final postResponse = await _httpGet(uri);
 
     if (postResponse.statusCode != 200) {
       if (postResponse.statusCode == 404) {
         throw NotFoundFailure('Could not find feed $tag/${sort.name}');
       } else {
-        print('Received HTTP ${postResponse.statusCode} calling $uri');
         throw ContentRequestFailure(statusCode: postResponse.statusCode);
       }
     }
 
-    final bodyJson = jsonDecode(postResponse.body);
+    final bodyJson = jsonDecode(postResponse.body) as Map<String, dynamic>;
 
     return Feed.fromJson(bodyJson);
+  }
+
+  Future<http.Response> _httpGet(Uri url, {Map<String, String>? headers}) {
+    return httpClient != null
+        ? httpClient!.get(url, headers: headers)
+        : http.get(url, headers: headers);
   }
 
   ValueStream<Post> getPost(Authorperm id) {
@@ -142,9 +153,11 @@ class LightningApiClient {
     return controller;
   }
 
-  Future<void> _fetchAndAddPost(Authorperm id,
-      {bool? forceLatest = false}) async {
-    assert(_postStreamControllers.containsKey(id));
+  Future<void> _fetchAndAddPost(
+    Authorperm id, {
+    bool? forceLatest = false,
+  }) async {
+    assert(_postStreamControllers.containsKey(id), 'Missing post stream $id');
 
     try {
       _postStreamControllers[id]!
@@ -156,14 +169,14 @@ class LightningApiClient {
 
   Future<Post> _fetchPost(Authorperm id, {bool? forceLatest}) async {
     final uri = Uri.https(
-        _baseUrl,
-        '/lightning/content/$id',
-        forceLatest != null
-            ? {'latest': forceLatest == true ? '1' : '0'}
-            : null);
+      _baseUrl,
+      '/lightning/content/$id',
+      forceLatest != null
+          ? <String, String>{'latest': forceLatest == true ? '1' : '0'}
+          : null,
+    );
 
-    print('fetchPost: $uri');
-    final postResponse = await _httpClient.get(uri);
+    final postResponse = await _httpGet(uri);
 
     if (postResponse.statusCode != 200) {
       if (postResponse.statusCode == 404) {
@@ -179,20 +192,13 @@ class LightningApiClient {
       throw NotFoundFailure('Could not find content $id');
     }
 
-    try {
-      return Post.fromJson(bodyJson);
-    } catch (e, s) {
-      print('Failed to parse $id: $e');
-      print(s);
-      print('Failed data: $bodyJson');
-      throw e;
-    }
+    return Post.fromJson(bodyJson);
   }
 
   /// Refresh the post and add it to the stream
   Future<void> refreshPost(Authorperm id) async {
     if (!_postStreamControllers.containsKey(id)) {
-      throw NotFoundFailure('Post not found');
+      throw const NotFoundFailure('Post not found');
     }
 
     return _fetchAndAddPost(id, forceLatest: true);
@@ -212,9 +218,14 @@ class LightningApiClient {
     return controller;
   }
 
-  Future<void> _fetchAndAddComments(Authorperm id,
-      {bool? forceLatest = false}) async {
-    assert(_commentsStreamControllers.containsKey(id));
+  Future<void> _fetchAndAddComments(
+    Authorperm id, {
+    bool? forceLatest = false,
+  }) async {
+    assert(
+      _commentsStreamControllers.containsKey(id),
+      'Missing comments entry for $id',
+    );
 
     try {
       _commentsStreamControllers[id]!
@@ -226,14 +237,14 @@ class LightningApiClient {
 
   Future<Comments> _fetchComments(Authorperm id, {bool? forceLatest}) async {
     final uri = Uri.https(
-        _baseUrl,
-        '/lightning/comments/$id',
-        forceLatest != null
-            ? {'latest': forceLatest == true ? '1' : '0'}
-            : null);
+      _baseUrl,
+      '/lightning/comments/$id',
+      forceLatest != null
+          ? <String, String>{'latest': forceLatest == true ? '1' : '0'}
+          : null,
+    );
 
-    print('fetchComments: $uri');
-    final postResponse = await _httpClient.get(uri);
+    final postResponse = await _httpGet(uri);
 
     if (postResponse.statusCode != 200) {
       if (postResponse.statusCode == 404) {
@@ -249,20 +260,13 @@ class LightningApiClient {
       throw NotFoundFailure('Could not find comments for $id');
     }
 
-    try {
-      return Comments.fromJson(bodyJson);
-    } catch (e, s) {
-      print('Failed to parse $id: $e');
-      print(s);
-      print('Failed data: $bodyJson');
-      throw e;
-    }
+    return Comments.fromJson(bodyJson);
   }
 
   /// Refresh the comments and add it to the stream
-  void refreshComments(Authorperm id) async {
+  Future<void> refreshComments(Authorperm id) async {
     if (!_commentsStreamControllers.containsKey(id)) {
-      throw NotFoundFailure('Comments not found');
+      throw const NotFoundFailure('Comments not found');
     }
 
     unawaited(_fetchAndAddComments(id, forceLatest: true));
@@ -286,8 +290,7 @@ class LightningApiClient {
     }
     final uri = Uri.https(_baseUrl, '/lightning/search', params);
 
-    print('search: $uri');
-    final searchResult = await _httpClient.get(uri);
+    final searchResult = await _httpGet(uri);
 
     if (searchResult.statusCode != 200) {
       throw ContentRequestFailure(statusCode: searchResult.statusCode);

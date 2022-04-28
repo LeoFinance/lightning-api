@@ -7,11 +7,11 @@ part 'manabar.g.dart';
 class Manabar extends Equatable {
   const Manabar({required this.currentMana, required this.lastUpdateTime});
 
-  final int currentMana;
-  final DateTime lastUpdateTime;
-
   factory Manabar.fromJson(Map<String, dynamic> json) =>
       _$ManabarFromJson(json);
+
+  final int currentMana;
+  final DateTime lastUpdateTime;
 
   Map<String, dynamic> toJson() => _$ManabarToJson(this);
 

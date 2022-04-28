@@ -160,16 +160,19 @@ class MockLightningApiClient extends _i1.Mock
       .noSuchMethod(Invocation.method(#getFeed, [], {#tag: tag, #sort: sort}),
           returnValue: Stream<_i5.Feed>.empty()) as _i7.Stream<_i5.Feed>);
   @override
-  void refreshFeed({String? tag, _i5.FeedSortOrder? sort}) =>
-      super.noSuchMethod(
+  _i7.Future<void> refreshFeed({String? tag, _i5.FeedSortOrder? sort}) =>
+      (super.noSuchMethod(
           Invocation.method(#refreshFeed, [], {#tag: tag, #sort: sort}),
-          returnValueForMissingStub: null);
+          returnValue: Future<void>.value(),
+          returnValueForMissingStub: Future<void>.value()) as _i7.Future<void>);
   @override
-  void expandFeed({String? tag, _i5.FeedSortOrder? sort, int? amount = 20}) =>
-      super.noSuchMethod(
+  _i7.Future<void> expandFeed(
+          {String? tag, _i5.FeedSortOrder? sort, int? amount = 20}) =>
+      (super.noSuchMethod(
           Invocation.method(
               #expandFeed, [], {#tag: tag, #sort: sort, #amount: amount}),
-          returnValueForMissingStub: null);
+          returnValue: Future<void>.value(),
+          returnValueForMissingStub: Future<void>.value()) as _i7.Future<void>);
   @override
   _i4.ValueStream<_i5.Post> getPost(_i5.Authorperm? id) =>
       (super.noSuchMethod(Invocation.method(#getPost, [id]),
@@ -186,9 +189,10 @@ class MockLightningApiClient extends _i1.Mock
               returnValue: _FakeValueStream_2<_i5.Comments>())
           as _i4.ValueStream<_i5.Comments>);
   @override
-  void refreshComments(_i5.Authorperm? id) =>
-      super.noSuchMethod(Invocation.method(#refreshComments, [id]),
-          returnValueForMissingStub: null);
+  _i7.Future<void> refreshComments(_i5.Authorperm? id) =>
+      (super.noSuchMethod(Invocation.method(#refreshComments, [id]),
+          returnValue: Future<void>.value(),
+          returnValueForMissingStub: Future<void>.value()) as _i7.Future<void>);
   @override
   _i7.Future<_i5.SearchResults> search(String? query,
           {int? start, int? limit}) =>

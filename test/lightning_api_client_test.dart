@@ -4,21 +4,20 @@ import 'dart:io';
 import 'package:http/http.dart' as http;
 import 'package:lightning_api/lightning_api.dart';
 import 'package:mockito/annotations.dart';
-import 'package:mockito/mockito.dart';
 import 'package:test/test.dart';
 
-import 'lightning_api_client_test.mocks.dart';
+// import 'lightning_api_client_test.mocks.dart';
 
 @GenerateMocks([http.Client, http.Response, LightningApiClient])
 void main() {
   group('LightningApiClient', () {
-    late http.Client httpClient;
-    late LightningApiClient lightningApiClient;
+    // late http.Client httpClient;
+    // late LightningApiClient lightningApiClient;
 
-    setUp(() {
-      httpClient = MockClient();
-      lightningApiClient = LightningApiClient(httpClient: httpClient);
-    });
+    // setUp(() {
+    //   httpClient = MockClient();
+    //   lightningApiClient = LightningApiClient(httpClient: httpClient);
+    // });
 
     group('constructor', () {
       test('does not require an httpClient', () {

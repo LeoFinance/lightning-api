@@ -15,7 +15,7 @@ Comment _$CommentFromJson(Map<String, dynamic> json) => Comment(
       body: json['body'] as String,
       parentAuthor: json['parent_author'] as String,
       parentPermlink: json['parent_permlink'] as String,
-      depth: json['depth'] as int? ?? 0,
+      depth: json['depth'] as int,
       jsonMetadata:
           JsonMetadata.fromJson(json['json_metadata'] as Map<String, dynamic>),
       created: DateTime.parse(json['created'] as String),
@@ -58,6 +58,7 @@ Map<String, dynamic> _$CommentToJson(Comment instance) => <String, dynamic>{
       'category': instance.category,
       'title': instance.title,
       'body': instance.body,
+      'depth': instance.depth,
       'json_metadata': instance.jsonMetadata.toJson(),
       'created': instance.created.toIso8601String(),
       'updated': instance.updated?.toIso8601String(),
@@ -86,5 +87,4 @@ Map<String, dynamic> _$CommentToJson(Comment instance) => <String, dynamic>{
       'tribe_downvotes': instance.tribeDownvotes,
       'parent_author': instance.parentAuthor,
       'parent_permlink': instance.parentPermlink,
-      'depth': instance.depth,
     };

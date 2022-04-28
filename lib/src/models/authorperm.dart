@@ -7,17 +7,19 @@ part 'authorperm.g.dart';
 class Authorperm extends Equatable {
   const Authorperm(this.author, this.permlink);
 
-  final String author;
-  final String permlink;
+  factory Authorperm.fromJson(Map<String, dynamic> json) =>
+      _$AuthorpermFromJson(json);
 
   factory Authorperm.parse(String authorperm) {
     final parts = authorperm.split('/');
     return Authorperm(
-        parts[0].startsWith('@') ? parts[0].substring(1) : parts[0], parts[1]);
+      parts[0].startsWith('@') ? parts[0].substring(1) : parts[0],
+      parts[1],
+    );
   }
 
-  factory Authorperm.fromJson(Map<String, dynamic> json) =>
-      _$AuthorpermFromJson(json);
+  final String author;
+  final String permlink;
 
   Map<String, dynamic> toJson() => _$AuthorpermToJson(this);
 

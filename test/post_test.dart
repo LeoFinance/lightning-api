@@ -4,27 +4,33 @@ import 'package:lightning_api/lightning_api.dart';
 import 'package:test/test.dart';
 
 void main() {
-  group('Content', () {
+  group('Post', () {
     group('fromJson', () {
       test('decodes from JSON', () async {
-        final json = await File('test/samples/content.json')
-            .readAsString()
-            .then(jsonDecode);
+        final s = await File('test/samples/post.json').readAsString();
+        final j = jsonDecode(s) as Map<String, dynamic>;
 
         expect(
-            Post.fromJson(json),
-            isA<Post>().having((c) => c.beneficiaries, 'beneficiaries',
-                [Beneficiary(account: 'archon-gov', weight: 500)]));
+          Post.fromJson(j),
+          isA<Post>()
+              .having((c) => c.beneficiaries, 'beneficiaries', <Beneficiary>[]),
+        );
       });
 
       test('allows empty beneficiaries', () async {
-        final json = await File('test/samples/content.json')
-            .readAsString()
-            .then(jsonDecode);
-        json["beneficiaries"] = [];
+        final s = await File('test/samples/post.json').readAsString();
+        final json = jsonDecode(s) as Map<String, dynamic>;
 
-        expect(Post.fromJson(json),
-            isA<Post>().having((c) => c.beneficiaries, 'beneficiaries', []));
+        json['beneficiaries'] = <Beneficiary>[];
+
+        expect(
+          Post.fromJson(json),
+          isA<Post>().having(
+            (c) => c.beneficiaries,
+            'beneficiaries',
+            <Beneficiary>[],
+          ),
+        );
       });
     });
   });

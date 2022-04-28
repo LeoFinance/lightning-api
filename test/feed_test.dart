@@ -7,12 +7,13 @@ void main() {
   group('Feed', () {
     group('fromJson', () {
       test('decodes from JSON', () async {
-        final json = await File('test/samples/feed.json')
-            .readAsString()
-            .then(jsonDecode);
+        final s = await File('test/samples/feed.json').readAsString();
+        final json = jsonDecode(s) as Map<String, dynamic>;
 
-        expect(Feed.fromJson(json),
-            isA<Feed>().having((f) => f.posts, 'posts', hasLength(3)));
+        expect(
+          Feed.fromJson(json),
+          isA<Feed>().having((f) => f.posts, 'posts', hasLength(20)),
+        );
       });
     });
   });

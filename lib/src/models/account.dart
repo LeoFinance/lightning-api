@@ -1,12 +1,11 @@
 import 'package:json_annotation/json_annotation.dart';
-
-import 'models.dart';
+import 'package:lightning_api/src/models/models.dart';
 
 part 'account.g.dart';
 
 @JsonSerializable(fieldRename: FieldRename.snake, explicitToJson: true)
 class Account {
-  Account({
+  const Account({
     required this.id,
     required this.name,
     required this.reputation,
@@ -75,6 +74,9 @@ class Account {
     required this.tribeStakedTokens,
   });
 
+  factory Account.fromJson(Map<String, dynamic> json) =>
+      _$AccountFromJson(json);
+
   final int id;
   final String name;
   final int reputation;
@@ -141,9 +143,6 @@ class Account {
   final int tribeStakedTokens;
   final double tribeUpvoteWeightMultiplier;
   final double tribeDownvoteWeightMultiplier;
-
-  factory Account.fromJson(Map<String, dynamic> json) =>
-      _$AccountFromJson(json);
 
   Map<String, dynamic> toJson() => _$AccountToJson(this);
 }

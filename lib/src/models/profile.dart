@@ -5,7 +5,7 @@ part 'profile.g.dart';
 
 @JsonSerializable(fieldRename: FieldRename.snake, explicitToJson: true)
 class Profile extends Equatable {
-  Profile({
+  const Profile({
     this.name,
     this.about,
     this.website,
@@ -13,6 +13,9 @@ class Profile extends Equatable {
     this.coverImage,
     this.profileImage,
   });
+
+  factory Profile.fromJson(Map<String, dynamic> json) =>
+      _$ProfileFromJson(json);
 
   final String? name;
   final String? about;
@@ -30,15 +33,13 @@ class Profile extends Equatable {
     String? profileImage,
   }) =>
       Profile(
-          name: name ?? this.name,
-          about: about ?? this.about,
-          website: website ?? this.website,
-          location: location ?? this.location,
-          coverImage: coverImage ?? this.coverImage,
-          profileImage: profileImage ?? this.profileImage);
-
-  factory Profile.fromJson(Map<String, dynamic> json) =>
-      _$ProfileFromJson(json);
+        name: name ?? this.name,
+        about: about ?? this.about,
+        website: website ?? this.website,
+        location: location ?? this.location,
+        coverImage: coverImage ?? this.coverImage,
+        profileImage: profileImage ?? this.profileImage,
+      );
 
   Map<String, dynamic> toJson() => _$ProfileToJson(this);
 
