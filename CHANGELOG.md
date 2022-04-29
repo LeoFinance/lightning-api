@@ -1,3 +1,7 @@
 ## 0.1.0
 
 - First public release.
+
+## 0.2.0
+
+- Upgrade to hive_api 0.2.0
