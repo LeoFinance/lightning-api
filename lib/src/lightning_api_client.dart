@@ -231,7 +231,7 @@ class LightningApiClient {
       _commentsStreamControllers[id]!
           .add(await _fetchComments(id, forceLatest: forceLatest));
     } catch (e, s) {
-      _feedStreamControllers[id]!.addError(e, s);
+      _commentsStreamControllers[id]!.addError(e, s);
     }
   }
 
