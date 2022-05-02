@@ -156,6 +156,10 @@ class MockLightningApiClient extends _i1.Mock
   }
 
   @override
+  _i7.Stream<_i5.Account?> getAccount(String? name) => (super.noSuchMethod(
+      Invocation.method(#getAccount, [name]),
+      returnValue: Stream<_i5.Account?>.empty()) as _i7.Stream<_i5.Account?>);
+  @override
   _i7.Stream<_i5.Feed> getFeed({String? tag, _i5.FeedSortOrder? sort}) => (super
       .noSuchMethod(Invocation.method(#getFeed, [], {#tag: tag, #sort: sort}),
           returnValue: Stream<_i5.Feed>.empty()) as _i7.Stream<_i5.Feed>);

@@ -18,3 +18,7 @@
 ## 0.2.3
 
 - Upgrade scot-api to 0.2.0
+
+## 0.3.0
+
+- Add getAccount

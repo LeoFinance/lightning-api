@@ -15,10 +15,58 @@ class LightningApiClient {
   final http.Client? httpClient;
   static const _baseUrl = 'beta.leofinance.io';
 
+  final _accountStreamControllers = <String, BehaviorSubject<Account?>>{};
+
   final _feedStreamControllers = <String, BehaviorSubject<Feed>>{};
   final _postStreamControllers = <Authorperm, BehaviorSubject<Post>>{};
 
   final _commentsStreamControllers = <Authorperm, BehaviorSubject<Comments>>{};
+
+  Stream<Account?> getAccount(String name) {
+    final BehaviorSubject<Account?> controller;
+    if (_accountStreamControllers.containsKey(name)) {
+      controller = _accountStreamControllers[name]!;
+    } else {
+      controller = BehaviorSubject<Account?>();
+      _accountStreamControllers[name] = controller;
+
+      unawaited(_fetchAndAddAccount(name));
+    }
+
+    return controller.asBroadcastStream();
+  }
+
+  Future<void> _fetchAndAddAccount(String name) async {
+    assert(
+        _accountStreamControllers.containsKey(name), 'Missing account $name');
+
+    try {
+      _accountStreamControllers[name]!.add(await _fetchAccount(name));
+    } catch (e, s) {
+      _accountStreamControllers[name]!.addError(e, s);
+    }
+  }
+
+  Future<Account?> _fetchAccount(String name) async {
+    final uri = Uri.https(
+      _baseUrl,
+      '/lightning/accounts/$name',
+    );
+
+    final postResponse = await _httpGet(uri);
+
+    if (postResponse.statusCode != 200) {
+      if (postResponse.statusCode == 404) {
+        return null;
+      } else {
+        throw ContentRequestFailure(statusCode: postResponse.statusCode);
+      }
+    }
+
+    final bodyJson = jsonDecode(postResponse.body) as Map<String, dynamic>;
+
+    return Account.fromJson(bodyJson);
+  }
 
   Stream<Feed> getFeed({required String tag, required FeedSortOrder sort}) {
     final key = _getKey(tag, sort.name);

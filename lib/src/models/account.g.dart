@@ -66,14 +66,14 @@ Account _$AccountFromJson(Map<String, dynamic> json) => Account(
       vestingBalance: (json['vesting_balance'] as num).toDouble(),
       tribeSymbol: json['tribe_symbol'] as String,
       tribeUpvoteWeightMultiplier:
-          (json['tribe_upvote_weight_multiplier'] as num).toDouble(),
+          (json['tribe_upvote_weight_multiplier'] as num?)?.toDouble() ?? 1.0,
       tribeDownvoteWeightMultiplier:
-          (json['tribe_downvote_weight_multiplier'] as num).toDouble(),
+          (json['tribe_downvote_weight_multiplier'] as num?)?.toDouble() ?? 1.0,
       tribeUpvotePower: json['tribe_upvote_power'] as int,
       tribeDownvotePower: json['tribe_downvote_power'] as int,
-      tribeEarnedMiningToken: json['tribe_earned_mining_token'] as int,
-      tribeEarnedOtherToken: json['tribe_earned_other_token'] as int,
-      tribeEarnedStakingToken: json['tribe_earned_staking_token'] as int,
+      tribeEarnedMiningToken: json['tribe_earned_mining_token'] as int? ?? 0,
+      tribeEarnedOtherToken: json['tribe_earned_other_token'] as int? ?? 0,
+      tribeEarnedStakingToken: json['tribe_earned_staking_token'] as int? ?? 0,
       tribeEarnedToken: json['tribe_earned_token'] as int,
       tribeLastUpvoteTime:
           DateTime.parse(json['tribe_last_upvote_time'] as String),
