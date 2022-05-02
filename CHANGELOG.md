@@ -14,3 +14,7 @@
 ## 0.2.2
 
 - Fix null check operator when attempting to fetch a nonexisting comment
+
+## 0.2.3
+
+- Upgrade scot-api to 0.2.0
