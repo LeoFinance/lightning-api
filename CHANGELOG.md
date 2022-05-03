@@ -22,3 +22,7 @@
 ## 0.3.0
 
 - Add getAccount
+
+## 0.3.1
+
+- Renamed some fields in Account

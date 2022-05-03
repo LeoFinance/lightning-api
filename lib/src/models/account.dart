@@ -12,9 +12,9 @@ class Account {
     required this.profile,
     required this.jsonMetadata,
     required this.postingJsonMetadata,
-    required this.lastOwnerUpdate,
-    required this.lastAccountUpdate,
-    required this.created,
+    required this.lastOwnerUpdateTime,
+    required this.lastAccountUpdateTime,
+    required this.createdTime,
     required this.postCount,
     required this.canVote,
     required this.upvoteManabar,
@@ -23,11 +23,11 @@ class Account {
     required this.balance,
     required this.savingsBalance,
     required this.hbdBalance,
-    required this.hbdLastUpdate,
-    required this.hbdLastInterestPayment,
+    required this.hbdLastUpdateTime,
+    required this.hbdLastInterestPaymentTime,
     required this.savingsHbdBalance,
-    required this.savingsHbdLastUpdate,
-    required this.savingsHbdLastInterestPayment,
+    required this.savingsHbdLastUpdateTime,
+    required this.savingsHbdLastInterestPaymentTime,
     required this.savingsWithdrawRequests,
     required this.rewardHbdBalance,
     required this.rewardHiveBalance,
@@ -38,15 +38,15 @@ class Account {
     required this.receivedVestingShares,
     required this.vestingWithdrawRate,
     required this.postVotingPower,
-    required this.nextVestingWithdrawal,
+    required this.nextVestingWithdrawalTime,
     required this.withdrawn,
     required this.toWithdraw,
     required this.withdrawRoutes,
     required this.pendingTransfers,
     required this.curationRewards,
     required this.postingRewards,
-    required this.lastPost,
-    required this.lastRootPost,
+    required this.lastPostTime,
+    required this.lastRootPostTime,
     required this.lastVoteTime,
     required this.pendingClaimedAccounts,
     required this.governanceVoteExpiration,
@@ -57,21 +57,21 @@ class Account {
     this.tribeDownvoteWeightMultiplier = 1.0,
     required this.tribeUpvotePower,
     required this.tribeDownvotePower,
-    this.tribeEarnedMiningToken = 0,
-    this.tribeEarnedOtherToken = 0,
-    this.tribeEarnedStakingToken = 0,
-    required this.tribeEarnedToken,
+    this.tribeNumEarnedMiningTokens = 0,
+    this.tribeNumEarnedOtherTokens = 0,
+    this.tribeNumEarnedStakingTokens = 0,
+    required this.tribeNumEarnedTokens,
     required this.tribeLastUpvoteTime,
     required this.tribeLastDownvoteTime,
     required this.tribeLastPostTime,
     required this.tribeLastRootPostTime,
-    required this.tribeLastWonMiningClaim,
-    required this.tribeLastWonStakingClaim,
+    required this.tribeLastWonMiningClaimTime,
+    required this.tribeLastWonStakingClaimTime,
     this.tribeIsMuted = false,
-    required this.tribePendingToken,
+    required this.tribeNumPendingTokens,
     required this.tribePrecision,
     required this.tribeStakedMiningPower,
-    required this.tribeStakedTokens,
+    required this.tribeNumStakedTokens,
   });
 
   factory Account.fromJson(Map<String, dynamic> json) =>
@@ -83,9 +83,9 @@ class Account {
   final Profile? profile;
   final String jsonMetadata;
   final String postingJsonMetadata;
-  final DateTime lastOwnerUpdate;
-  final DateTime lastAccountUpdate;
-  final DateTime created;
+  final DateTime lastOwnerUpdateTime;
+  final DateTime lastAccountUpdateTime;
+  final DateTime createdTime;
   final int postCount;
   final bool canVote;
   final Manabar upvoteManabar;
@@ -94,11 +94,11 @@ class Account {
   final double balance;
   final double savingsBalance;
   final double hbdBalance;
-  final DateTime hbdLastUpdate;
-  final DateTime hbdLastInterestPayment;
+  final DateTime hbdLastUpdateTime;
+  final DateTime hbdLastInterestPaymentTime;
   final double savingsHbdBalance;
-  final DateTime savingsHbdLastUpdate;
-  final DateTime savingsHbdLastInterestPayment;
+  final DateTime savingsHbdLastUpdateTime;
+  final DateTime savingsHbdLastInterestPaymentTime;
   final int savingsWithdrawRequests;
   final double rewardHbdBalance;
   final double rewardHiveBalance;
@@ -109,15 +109,15 @@ class Account {
   final double receivedVestingShares;
   final double vestingWithdrawRate;
   final double postVotingPower;
-  final DateTime nextVestingWithdrawal;
+  final DateTime nextVestingWithdrawalTime;
   final int withdrawn;
   final int toWithdraw;
   final int withdrawRoutes;
   final int pendingTransfers;
   final int curationRewards;
   final int postingRewards;
-  final DateTime lastPost;
-  final DateTime lastRootPost;
+  final DateTime lastPostTime;
+  final DateTime lastRootPostTime;
   final DateTime lastVoteTime;
   final int pendingClaimedAccounts;
   final DateTime governanceVoteExpiration;
@@ -126,21 +126,21 @@ class Account {
   final int tribeUpvotePower;
   final int tribeDownvotePower;
   final String tribeSymbol;
-  final int tribeEarnedMiningToken;
-  final int tribeEarnedStakingToken;
-  final int tribeEarnedOtherToken;
-  final int tribeEarnedToken;
+  final int tribeNumEarnedMiningTokens;
+  final int tribeNumEarnedStakingTokens;
+  final int tribeNumEarnedOtherTokens;
+  final int tribeNumEarnedTokens;
   final DateTime tribeLastUpvoteTime;
   final DateTime tribeLastDownvoteTime;
   final DateTime tribeLastPostTime;
   final DateTime tribeLastRootPostTime;
-  final DateTime tribeLastWonMiningClaim;
-  final DateTime tribeLastWonStakingClaim;
+  final DateTime tribeLastWonMiningClaimTime;
+  final DateTime tribeLastWonStakingClaimTime;
   final bool tribeIsMuted;
-  final int tribePendingToken;
+  final int tribeNumPendingTokens;
   final int tribePrecision;
   final double tribeStakedMiningPower;
-  final int tribeStakedTokens;
+  final int tribeNumStakedTokens;
   final double tribeUpvoteWeightMultiplier;
   final double tribeDownvoteWeightMultiplier;
 
