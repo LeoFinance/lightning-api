@@ -31,11 +31,19 @@ class Feed extends Equatable {
 
   Authorperm operator [](int index) => posts[index];
 
+  Feed copyWith({String? tag, String? sort, List<Authorperm>? posts}) {
+    return Feed(
+      tag: tag ?? this.tag,
+      sort: sort ?? this.sort,
+      posts: posts ?? this.posts,
+    );
+  }
+
   Map<String, dynamic> toJson() => _$FeedToJson(this);
 
   @override
   List<Object?> get props => [tag, sort, posts];
 
   @override
-  String toString() => 'Feed: $posts';
+  bool get stringify => true;
 }

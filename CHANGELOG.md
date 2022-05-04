@@ -26,3 +26,7 @@
 ## 0.3.1
 
 - getPost and getComments returns null when not found
+
+## 0.3.2
+
+- Add Feed.copyWith
