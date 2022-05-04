@@ -22,3 +22,7 @@
 ## 0.3.0
 
 - Add getAccount
+
+## 0.3.1
+
+- getPost and getComments returns null when not found

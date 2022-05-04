@@ -62,6 +62,40 @@ void main() {
       });
     });
 
+    group('getPost', () {
+      test('returns Stream with null when post not found', () async {
+        final author = faker.internet.userName();
+        final permlink = faker.randomGenerator.string(10);
+        final authorperm = Authorperm(author, permlink);
+
+        final response = MockResponse();
+        when(response.statusCode).thenReturn(404);
+        when(httpClient.get(any)).thenAnswer((_) async => response);
+
+        expect(
+          lightningApiClient.getPost(authorperm),
+          emitsInOrder(<dynamic>[isNull]),
+        );
+      });
+    });
+
+    group('getComments', () {
+      test('returns Stream with null when post not found', () async {
+        final author = faker.internet.userName();
+        final permlink = faker.randomGenerator.string(10);
+        final authorperm = Authorperm(author, permlink);
+
+        final response = MockResponse();
+        when(response.statusCode).thenReturn(404);
+        when(httpClient.get(any)).thenAnswer((_) async => response);
+
+        expect(
+          lightningApiClient.getComments(authorperm),
+          emitsInOrder(<dynamic>[isNull]),
+        );
+      });
+    });
+
     // test('returns null when account not found', () async {
     //   const name = 'userNotFound';
     //   const key = 'user:$name';

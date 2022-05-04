@@ -18,9 +18,9 @@ class LightningApiClient {
   final _accountStreamControllers = <String, BehaviorSubject<Account?>>{};
 
   final _feedStreamControllers = <String, BehaviorSubject<Feed>>{};
-  final _postStreamControllers = <Authorperm, BehaviorSubject<Post>>{};
+  final _postStreamControllers = <Authorperm, BehaviorSubject<Post?>>{};
 
-  final _commentsStreamControllers = <Authorperm, BehaviorSubject<Comments>>{};
+  final _commentsStreamControllers = <Authorperm, BehaviorSubject<Comments?>>{};
 
   Stream<Account?> getAccount(String name) {
     final BehaviorSubject<Account?> controller;
@@ -187,12 +187,12 @@ class LightningApiClient {
         : http.get(url, headers: headers);
   }
 
-  ValueStream<Post> getPost(Authorperm id) {
-    final BehaviorSubject<Post> controller;
+  ValueStream<Post?> getPost(Authorperm id) {
+    final BehaviorSubject<Post?> controller;
     if (_postStreamControllers.containsKey(id)) {
       controller = _postStreamControllers[id]!;
     } else {
-      controller = BehaviorSubject<Post>();
+      controller = BehaviorSubject<Post?>();
       _postStreamControllers[id] = controller;
 
       unawaited(_fetchAndAddPost(id));
@@ -215,7 +215,7 @@ class LightningApiClient {
     }
   }
 
-  Future<Post> _fetchPost(Authorperm id, {bool? forceLatest}) async {
+  Future<Post?> _fetchPost(Authorperm id, {bool? forceLatest}) async {
     final uri = Uri.https(
       _baseUrl,
       '/lightning/content/$id',
@@ -228,7 +228,7 @@ class LightningApiClient {
 
     if (postResponse.statusCode != 200) {
       if (postResponse.statusCode == 404) {
-        throw NotFoundFailure('Could not find content for $id');
+        return null;
       } else {
         throw ContentRequestFailure(statusCode: postResponse.statusCode);
       }
@@ -236,28 +236,20 @@ class LightningApiClient {
 
     final bodyJson = jsonDecode(postResponse.body) as Map<String, dynamic>;
 
-    if (bodyJson.isEmpty) {
-      throw NotFoundFailure('Could not find content $id');
-    }
-
     return Post.fromJson(bodyJson);
   }
 
   /// Refresh the post and add it to the stream
   Future<void> refreshPost(Authorperm id) async {
-    if (!_postStreamControllers.containsKey(id)) {
-      throw const NotFoundFailure('Post not found');
-    }
-
     return _fetchAndAddPost(id, forceLatest: true);
   }
 
-  ValueStream<Comments> getComments(Authorperm postId) {
-    final BehaviorSubject<Comments> controller;
+  ValueStream<Comments?> getComments(Authorperm postId) {
+    final BehaviorSubject<Comments?> controller;
     if (_commentsStreamControllers.containsKey(postId)) {
       controller = _commentsStreamControllers[postId]!;
     } else {
-      controller = BehaviorSubject<Comments>();
+      controller = BehaviorSubject<Comments?>();
       _commentsStreamControllers[postId] = controller;
 
       unawaited(_fetchAndAddComments(postId));
@@ -283,7 +275,7 @@ class LightningApiClient {
     }
   }
 
-  Future<Comments> _fetchComments(Authorperm id, {bool? forceLatest}) async {
+  Future<Comments?> _fetchComments(Authorperm id, {bool? forceLatest}) async {
     final uri = Uri.https(
       _baseUrl,
       '/lightning/comments/$id',
@@ -296,17 +288,13 @@ class LightningApiClient {
 
     if (postResponse.statusCode != 200) {
       if (postResponse.statusCode == 404) {
-        throw NotFoundFailure('Could not find comments for $id');
+        return null;
       } else {
         throw ContentRequestFailure(statusCode: postResponse.statusCode);
       }
     }
 
     final bodyJson = jsonDecode(postResponse.body) as Map<String, dynamic>;
-
-    if (bodyJson.isEmpty) {
-      throw NotFoundFailure('Could not find comments for $id');
-    }
 
     return Comments.fromJson(bodyJson);
   }
