@@ -68,7 +68,11 @@ class LightningApiClient {
     return Account.fromJson(bodyJson);
   }
 
-  Stream<Feed> getFeed({required String tag, required FeedSortOrder sort}) {
+  Stream<Feed> getFeed({
+    required String tag,
+    required FeedSortOrder sort,
+    bool requestLatest = false,
+  }) {
     final key = _getKey(tag, sort.name);
     final BehaviorSubject<Feed> controller;
     if (_feedStreamControllers.containsKey(key)) {
@@ -77,7 +81,8 @@ class LightningApiClient {
       controller = BehaviorSubject<Feed>();
       _feedStreamControllers[key] = controller;
 
-      unawaited(_fetchAndAddFeed(tag: tag, sort: sort));
+      unawaited(
+          _fetchAndAddFeed(tag: tag, sort: sort, requestLatest: requestLatest));
     }
 
     return controller.asBroadcastStream();
@@ -90,6 +95,7 @@ class LightningApiClient {
     required FeedSortOrder sort,
     int? start,
     int? limit,
+    bool requestLatest = false,
   }) async {
     final key = _getKey(tag, sort.name);
 
@@ -203,25 +209,23 @@ class LightningApiClient {
 
   Future<void> _fetchAndAddPost(
     Authorperm id, {
-    bool? forceLatest = false,
+    bool requestLatest = false,
   }) async {
     assert(_postStreamControllers.containsKey(id), 'Missing post stream $id');
 
     try {
       _postStreamControllers[id]!
-          .add(await _fetchPost(id, forceLatest: forceLatest));
+          .add(await _fetchPost(id, requestLatest: requestLatest));
     } catch (e, s) {
       _postStreamControllers[id]!.addError(e, s);
     }
   }
 
-  Future<Post?> _fetchPost(Authorperm id, {bool? forceLatest}) async {
+  Future<Post?> _fetchPost(Authorperm id, {bool requestLatest = false}) async {
     final uri = Uri.https(
       _baseUrl,
       '/lightning/content/$id',
-      forceLatest != null
-          ? <String, String>{'latest': forceLatest == true ? '1' : '0'}
-          : null,
+      <String, dynamic>{'latest': requestLatest == true ? '1' : '0'},
     );
 
     final postResponse = await _httpGet(uri);
@@ -241,7 +245,7 @@ class LightningApiClient {
 
   /// Refresh the post and add it to the stream
   Future<void> refreshPost(Authorperm id) async {
-    return _fetchAndAddPost(id, forceLatest: true);
+    return _fetchAndAddPost(id, requestLatest: true);
   }
 
   ValueStream<Comments?> getComments(Authorperm postId) {
@@ -260,7 +264,7 @@ class LightningApiClient {
 
   Future<void> _fetchAndAddComments(
     Authorperm id, {
-    bool? forceLatest = false,
+    bool requestLatest = false,
   }) async {
     assert(
       _commentsStreamControllers.containsKey(id),
@@ -269,19 +273,20 @@ class LightningApiClient {
 
     try {
       _commentsStreamControllers[id]!
-          .add(await _fetchComments(id, forceLatest: forceLatest));
+          .add(await _fetchComments(id, requestLatest: requestLatest));
     } catch (e, s) {
       _commentsStreamControllers[id]!.addError(e, s);
     }
   }
 
-  Future<Comments?> _fetchComments(Authorperm id, {bool? forceLatest}) async {
+  Future<Comments?> _fetchComments(
+    Authorperm id, {
+    bool requestLatest = false,
+  }) async {
     final uri = Uri.https(
       _baseUrl,
       '/lightning/comments/$id',
-      forceLatest != null
-          ? <String, String>{'latest': forceLatest == true ? '1' : '0'}
-          : null,
+      <String, dynamic>{'latest': requestLatest == true ? '1' : '0'},
     );
 
     final postResponse = await _httpGet(uri);
@@ -305,7 +310,7 @@ class LightningApiClient {
       throw const NotFoundFailure('Comments not found');
     }
 
-    unawaited(_fetchAndAddComments(id, forceLatest: true));
+    unawaited(_fetchAndAddComments(id, requestLatest: true));
   }
 
   // /// Find and return the id of the post which contains the given comment.

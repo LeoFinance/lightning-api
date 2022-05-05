@@ -160,8 +160,13 @@ class MockLightningApiClient extends _i1.Mock
       Invocation.method(#getAccount, [name]),
       returnValue: Stream<_i5.Account?>.empty()) as _i7.Stream<_i5.Account?>);
   @override
-  _i7.Stream<_i5.Feed> getFeed({String? tag, _i5.FeedSortOrder? sort}) => (super
-      .noSuchMethod(Invocation.method(#getFeed, [], {#tag: tag, #sort: sort}),
+  _i7.Stream<_i5.Feed> getFeed(
+          {String? tag,
+          _i5.FeedSortOrder? sort,
+          bool? requestLatest = false}) =>
+      (super.noSuchMethod(
+          Invocation.method(#getFeed, [],
+              {#tag: tag, #sort: sort, #requestLatest: requestLatest}),
           returnValue: Stream<_i5.Feed>.empty()) as _i7.Stream<_i5.Feed>);
   @override
   _i7.Future<void> refreshFeed({String? tag, _i5.FeedSortOrder? sort}) =>
@@ -178,20 +183,20 @@ class MockLightningApiClient extends _i1.Mock
           returnValue: Future<void>.value(),
           returnValueForMissingStub: Future<void>.value()) as _i7.Future<void>);
   @override
-  _i4.ValueStream<_i5.Post> getPost(_i5.Authorperm? id) =>
+  _i4.ValueStream<_i5.Post?> getPost(_i5.Authorperm? id) =>
       (super.noSuchMethod(Invocation.method(#getPost, [id]),
-              returnValue: _FakeValueStream_2<_i5.Post>())
-          as _i4.ValueStream<_i5.Post>);
+              returnValue: _FakeValueStream_2<_i5.Post?>())
+          as _i4.ValueStream<_i5.Post?>);
   @override
   _i7.Future<void> refreshPost(_i5.Authorperm? id) =>
       (super.noSuchMethod(Invocation.method(#refreshPost, [id]),
           returnValue: Future<void>.value(),
           returnValueForMissingStub: Future<void>.value()) as _i7.Future<void>);
   @override
-  _i4.ValueStream<_i5.Comments> getComments(_i5.Authorperm? postId) =>
+  _i4.ValueStream<_i5.Comments?> getComments(_i5.Authorperm? postId) =>
       (super.noSuchMethod(Invocation.method(#getComments, [postId]),
-              returnValue: _FakeValueStream_2<_i5.Comments>())
-          as _i4.ValueStream<_i5.Comments>);
+              returnValue: _FakeValueStream_2<_i5.Comments?>())
+          as _i4.ValueStream<_i5.Comments?>);
   @override
   _i7.Future<void> refreshComments(_i5.Authorperm? id) =>
       (super.noSuchMethod(Invocation.method(#refreshComments, [id]),

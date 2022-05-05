@@ -30,3 +30,7 @@
 ## 0.3.2
 
 - Add Feed.copyWith
+
+## 0.3.3
+
+- Standardize `requestLatest` parameter
