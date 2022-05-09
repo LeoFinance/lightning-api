@@ -34,3 +34,7 @@
 ## 0.3.3
 
 - Standardize `requestLatest` parameter
+
+## 0.3.4
+
+- Fix `getFeed.requestLatest` not honored

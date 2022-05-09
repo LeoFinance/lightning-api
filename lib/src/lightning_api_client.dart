@@ -38,7 +38,9 @@ class LightningApiClient {
 
   Future<void> _fetchAndAddAccount(String name) async {
     assert(
-        _accountStreamControllers.containsKey(name), 'Missing account $name');
+      _accountStreamControllers.containsKey(name),
+      'Missing account $name',
+    );
 
     try {
       _accountStreamControllers[name]!.add(await _fetchAccount(name));
@@ -82,7 +84,12 @@ class LightningApiClient {
       _feedStreamControllers[key] = controller;
 
       unawaited(
-          _fetchAndAddFeed(tag: tag, sort: sort, requestLatest: requestLatest));
+        _fetchAndAddFeed(
+          tag: tag,
+          sort: sort,
+          requestLatest: requestLatest,
+        ),
+      );
     }
 
     return controller.asBroadcastStream();
@@ -103,7 +110,13 @@ class LightningApiClient {
 
     try {
       _feedStreamControllers[key]!.add(
-        await _fetchFeed(tag: tag, sort: sort, start: start, limit: limit),
+        await _fetchFeed(
+          tag: tag,
+          sort: sort,
+          start: start,
+          limit: limit,
+          requestLatest: requestLatest,
+        ),
       );
     } catch (e, s) {
       _feedStreamControllers[key]!.addError(e, s);
@@ -120,7 +133,7 @@ class LightningApiClient {
       throw const NotFoundFailure('Feed not found');
     }
 
-    unawaited(_fetchAndAddFeed(tag: tag, sort: sort));
+    unawaited(_fetchAndAddFeed(tag: tag, sort: sort, requestLatest: true));
   }
 
   /// Expand the feed and add it to the stream
@@ -162,10 +175,12 @@ class LightningApiClient {
     required FeedSortOrder sort,
     int? start,
     int? limit,
+    bool requestLatest = false,
   }) async {
     final queryParameters = <String, String>{};
     if (start != null) queryParameters['start'] = start.toString();
     if (limit != null) queryParameters['limit'] = limit.toString();
+    if (requestLatest) queryParameters['latest'] = '1';
 
     final uri = Uri.https(
       _baseUrl,
