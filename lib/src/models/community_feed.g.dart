@@ -1,19 +1,19 @@
 // GENERATED CODE - DO NOT MODIFY BY HAND
 
-part of 'feed.dart';
+part of 'community_feed.dart';
 
 // **************************************************************************
 // JsonSerializableGenerator
 // **************************************************************************
 
-Feed _$FeedFromJson(Map<String, dynamic> json) => Feed(
-      tag: json['tag'] as String,
-      sort: json['sort'] as String,
+CommunityFeed _$CommunityFeedFromJson(Map<String, dynamic> json) =>
+    CommunityFeed(
       posts: Authorperm.deserializeList(json['posts'] as List),
+      lastOpIndex: Map<String, int>.from(json['lastOpIndex'] as Map),
     );
 
-Map<String, dynamic> _$FeedToJson(Feed instance) => <String, dynamic>{
-      'tag': instance.tag,
-      'sort': instance.sort,
+Map<String, dynamic> _$CommunityFeedToJson(CommunityFeed instance) =>
+    <String, dynamic>{
       'posts': Authorperm.serializeList(instance.posts),
+      'lastOpIndex': instance.lastOpIndex,
     };

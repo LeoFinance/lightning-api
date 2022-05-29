@@ -15,14 +15,11 @@ class Feed extends Equatable {
   final String tag;
   final String sort;
 
-  @JsonKey(fromJson: _toAuthorpermList, toJson: _fromAuthorpermList)
+  @JsonKey(
+      fromJson: Authorperm.deserializeList,
+      toJson: Authorperm.serializeList,
+  )
   final List<Authorperm> posts;
-
-  static List<Authorperm> _toAuthorpermList(List posts) =>
-      posts.map((dynamic s) => Authorperm.parse(s as String)).toList();
-
-  static List<String> _fromAuthorpermList(List<Authorperm> posts) =>
-      posts.map((p) => p.toString()).toList();
 
   int get length => posts.length;
 
