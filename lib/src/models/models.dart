@@ -12,6 +12,7 @@ export 'authorperm.dart';
 export 'comment.dart';
 export 'comments.dart';
 export 'community_feed.dart';
+export 'community_posts.dart';
 export 'content.dart';
 export 'feed.dart';
 export 'manabar.dart';
