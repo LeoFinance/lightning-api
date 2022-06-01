@@ -9,11 +9,13 @@ part of 'community_feed.dart';
 CommunityFeed _$CommunityFeedFromJson(Map<String, dynamic> json) =>
     CommunityFeed(
       posts: Authorperm.deserializeList(json['posts'] as List),
-      lastOpIndex: Map<String, int>.from(json['lastOpIndex'] as Map),
+      lastOpIndices: Map<String, int>.from(json['lastOpIndices'] as Map),
+      oldestQuery: DateTime.parse(json['oldestQuery'] as String),
     );
 
 Map<String, dynamic> _$CommunityFeedToJson(CommunityFeed instance) =>
     <String, dynamic>{
       'posts': Authorperm.serializeList(instance.posts),
-      'lastOpIndex': instance.lastOpIndex,
+      'lastOpIndices': instance.lastOpIndices,
+      'oldestQuery': instance.oldestQuery.toIso8601String(),
     };

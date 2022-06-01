@@ -6,7 +6,11 @@ part 'community_feed.g.dart';
 
 @JsonSerializable(explicitToJson: true)
 class CommunityFeed extends Equatable {
-  const CommunityFeed({required this.posts, required this.lastOpIndex});
+  const CommunityFeed({
+    required this.posts,
+    required this.lastOpIndices,
+    required this.oldestQuery,
+  });
 
   factory CommunityFeed.fromJson(Map<String, dynamic> json) {
     return _$CommunityFeedFromJson(json);
@@ -17,7 +21,8 @@ class CommunityFeed extends Equatable {
     toJson: Authorperm.serializeList,
   )
   final List<Authorperm> posts;
-  final Map<String, int> lastOpIndex;
+  final Map<String, int> lastOpIndices;
+  final DateTime oldestQuery;
 
   int get length => posts.length;
 
@@ -29,18 +34,20 @@ class CommunityFeed extends Equatable {
 
   CommunityFeed copyWith({
     List<Authorperm>? posts,
-    Map<String, int>? lastOpIndex,
+    Map<String, int>? lastOpIndices,
+    DateTime? oldestQuery,
   }) {
     return CommunityFeed(
       posts: posts ?? this.posts,
-      lastOpIndex: lastOpIndex ?? this.lastOpIndex,
+      lastOpIndices: lastOpIndices ?? this.lastOpIndices,
+      oldestQuery: oldestQuery ?? this.oldestQuery,
     );
   }
 
   Map<String, dynamic> toJson() => _$CommunityFeedToJson(this);
 
   @override
-  List<Object?> get props => [posts, lastOpIndex];
+  List<Object?> get props => [posts, lastOpIndices, oldestQuery];
 
   @override
   bool get stringify => true;
