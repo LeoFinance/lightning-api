@@ -18,6 +18,12 @@ class Authorperm extends Equatable {
     );
   }
 
+  static List<Authorperm> deserializeList(List posts) =>
+      posts.map((dynamic s) => Authorperm.parse(s as String)).toList();
+
+  static List<String> serializeList(List<Authorperm> posts) =>
+      posts.map((p) => p.toString()).toList();
+
   final String author;
   final String permlink;
 

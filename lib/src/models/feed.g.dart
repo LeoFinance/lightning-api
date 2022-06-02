@@ -9,11 +9,11 @@ part of 'feed.dart';
 Feed _$FeedFromJson(Map<String, dynamic> json) => Feed(
       tag: json['tag'] as String,
       sort: json['sort'] as String,
-      posts: Feed._toAuthorpermList(json['posts'] as List),
+      posts: Authorperm.deserializeList(json['posts'] as List),
     );
 
 Map<String, dynamic> _$FeedToJson(Feed instance) => <String, dynamic>{
       'tag': instance.tag,
       'sort': instance.sort,
-      'posts': Feed._fromAuthorpermList(instance.posts),
+      'posts': Authorperm.serializeList(instance.posts),
     };
