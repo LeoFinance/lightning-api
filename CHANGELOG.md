@@ -38,3 +38,7 @@
 ## 0.3.4
 
 - Fix `getFeed.requestLatest` not honored
+
+## 0.4.0
+
+- Add community feeds and posts
