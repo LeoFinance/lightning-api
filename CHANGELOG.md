@@ -42,3 +42,11 @@
 ## 0.4.0
 
 - Add community feeds and posts
+
+## 0.4.1
+
+- Use Scot API version 0.3.0
+
+## 0.4.2
+
+- Use Scot API version 0.4.0
