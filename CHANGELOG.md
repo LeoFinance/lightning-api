@@ -50,3 +50,7 @@
 ## 0.4.2
 
 - Use Scot API version 0.4.0
+
+## 0.4.3
+
+- Upgrade Scot API and Hive API versions
