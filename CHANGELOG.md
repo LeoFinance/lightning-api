@@ -54,3 +54,7 @@
 ## 0.4.3
 
 - Upgrade Scot API and Hive API versions
+
+## 0.4.4
+
+- Upgrade Hive API version
