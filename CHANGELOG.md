@@ -58,3 +58,7 @@
 ## 0.4.4
 
 - Upgrade Hive API version
+
+## 0.5.0
+
+- Extend Feed to include posts or comments

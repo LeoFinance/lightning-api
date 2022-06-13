@@ -6,7 +6,12 @@ part 'feed.g.dart';
 
 @JsonSerializable(explicitToJson: true)
 class Feed extends Equatable {
-  const Feed({required this.tag, required this.sort, required this.posts});
+  const Feed({
+    required this.tag,
+    required this.sort,
+    this.posts,
+    this.comments,
+  });
 
   factory Feed.fromJson(Map<String, dynamic> json) {
     return _$FeedFromJson(json);
@@ -16,30 +21,37 @@ class Feed extends Equatable {
   final String sort;
 
   @JsonKey(
-      fromJson: Authorperm.deserializeList,
-      toJson: Authorperm.serializeList,
+    fromJson: Authorperm.deserializeList,
+    toJson: Authorperm.serializeList,
   )
-  final List<Authorperm> posts;
+  final List<Authorperm>? posts;
+  final List<Authorperm>? comments;
 
-  int get length => posts.length;
+  int get length => posts?.length ?? comments!.length;
 
-  bool get isEmpty => posts.isEmpty;
-  bool get isNotEmpty => posts.isNotEmpty;
+  bool get isEmpty => posts?.isEmpty ?? comments!.isEmpty;
+  bool get isNotEmpty => posts?.isNotEmpty ?? comments!.isNotEmpty;
 
-  Authorperm operator [](int index) => posts[index];
+  Authorperm operator [](int index) => posts?[index] ?? comments![index];
 
-  Feed copyWith({String? tag, String? sort, List<Authorperm>? posts}) {
+  Feed copyWith({
+    String? tag,
+    String? sort,
+    List<Authorperm>? posts,
+    List<Authorperm>? comments,
+  }) {
     return Feed(
       tag: tag ?? this.tag,
       sort: sort ?? this.sort,
       posts: posts ?? this.posts,
+      comments: comments ?? this.comments,
     );
   }
 
   Map<String, dynamic> toJson() => _$FeedToJson(this);
 
   @override
-  List<Object?> get props => [tag, sort, posts];
+  List<Object?> get props => [tag, sort, posts, comments];
 
   @override
   bool get stringify => true;
