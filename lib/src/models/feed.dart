@@ -25,6 +25,10 @@ class Feed extends Equatable {
     toJson: Authorperm.serializeNullableList,
   )
   final List<Authorperm>? posts;
+  @JsonKey(
+    fromJson: Authorperm.deserializeNullableList,
+    toJson: Authorperm.serializeNullableList,
+  )
   final List<Authorperm>? comments;
 
   int get length => posts?.length ?? comments!.length;

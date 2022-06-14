@@ -66,3 +66,7 @@
 ## 0.5.1
 
 - Regenerate classes
+
+## 0.5.2
+
+- Fix serialization code
