@@ -21,8 +21,8 @@ class Feed extends Equatable {
   final String sort;
 
   @JsonKey(
-    fromJson: Authorperm.deserializeList,
-    toJson: Authorperm.serializeList,
+    fromJson: Authorperm.deserializeNullableList,
+    toJson: Authorperm.serializeNullableList,
   )
   final List<Authorperm>? posts;
   final List<Authorperm>? comments;

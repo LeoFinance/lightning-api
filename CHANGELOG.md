@@ -62,3 +62,7 @@
 ## 0.5.0
 
 - Extend Feed to include posts or comments
+
+## 0.5.1
+
+- Regenerate classes
