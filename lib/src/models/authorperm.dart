@@ -18,6 +18,15 @@ class Authorperm extends Equatable {
     );
   }
 
+  // ignore: prefer_constructors_over_static_methods
+  static Authorperm fromAuthorpermString(dynamic ap) =>
+      Authorperm.parse(ap.toString());
+  static String toAuthorpermString(Authorperm ap) => ap.toString();
+  static List<Authorperm> fromListAuthorpermString(List<dynamic> aps) =>
+      aps.map(fromAuthorpermString).toList();
+  static List<String> toListAuthorpermString(List<Authorperm> aps) =>
+      aps.map(toAuthorpermString).toList();
+
   static List<Authorperm> deserializeList(List posts) =>
       posts.map((dynamic s) => Authorperm.parse(s as String)).toList();
 

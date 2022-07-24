@@ -70,3 +70,7 @@
 ## 0.5.2
 
 - Fix serialization code
+
+## 0.6.0
+
+- Add Thread class
