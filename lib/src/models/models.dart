@@ -19,4 +19,3 @@ export 'manabar.dart';
 export 'post.dart';
 export 'profile.dart';
 export 'search_results.dart';
-export 'thread.dart';
