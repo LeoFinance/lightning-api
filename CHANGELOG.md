@@ -79,3 +79,7 @@
 
 - Add Feed.subfeed method
 - Remove Thread class
+
+## 0.8.0
+
+- Add a new Thread class
