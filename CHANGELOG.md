@@ -83,3 +83,7 @@
 ## 0.8.0
 
 - Add a new Thread class
+
+## 0.9.0
+
+- Thread must contain the actual content

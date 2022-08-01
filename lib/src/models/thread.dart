@@ -15,12 +15,7 @@ class Thread extends Equatable {
 
   factory Thread.fromJson(Map<String, dynamic> json) => _$ThreadFromJson(json);
 
-  /// The post which contains this thread
-  @JsonKey(
-    fromJson: Authorperm.fromAuthorpermString,
-    toJson: Authorperm.toAuthorpermString,
-  )
-  final Authorperm parent;
+  final Comment parent;
 
   @JsonKey(
     fromJson: Authorperm.fromListAuthorpermString,
@@ -29,7 +24,7 @@ class Thread extends Equatable {
   final List<Authorperm> replies;
 
   Thread copyWith({
-    Authorperm? parent,
+    Comment? parent,
     List<Authorperm>? replies,
   }) {
     return Thread(

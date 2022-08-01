@@ -7,13 +7,13 @@ part of 'thread.dart';
 // **************************************************************************
 
 Thread _$ThreadFromJson(Map<String, dynamic> json) => Thread(
-      parent: Authorperm.fromAuthorpermString(json['parent']),
+      parent: Comment.fromJson(json['parent'] as Map<String, dynamic>),
       replies: json['replies'] == null
           ? const []
           : Authorperm.fromListAuthorpermString(json['replies'] as List),
     );
 
 Map<String, dynamic> _$ThreadToJson(Thread instance) => <String, dynamic>{
-      'parent': Authorperm.toAuthorpermString(instance.parent),
+      'parent': instance.parent.toJson(),
       'replies': Authorperm.toListAuthorpermString(instance.replies),
     };
