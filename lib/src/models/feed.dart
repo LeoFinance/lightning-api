@@ -38,6 +38,15 @@ class Feed extends Equatable {
 
   Authorperm operator [](int index) => posts?[index] ?? comments![index];
 
+  Feed subfeed(int start, [int? end]) {
+    return Feed(
+      tag: tag,
+      sort: sort,
+      posts: posts?.sublist(start, end ?? length),
+      comments: comments?.sublist(start, end ?? length),
+    );
+  }
+
   Feed copyWith({
     String? tag,
     String? sort,
