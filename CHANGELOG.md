@@ -103,3 +103,7 @@
 ## 0.11.1
 
 - Fix getThreads params should be optional
+
+## 0.11.2
+
+- Forgot refreshThreads API call

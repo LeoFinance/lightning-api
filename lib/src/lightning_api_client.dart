@@ -99,7 +99,7 @@ class LightningApiClient {
   }
 
   String _getKey(String? tag, String? sort) => '$tag:$sort';
-  String _getThreadKey(String? tag, String? sort) => 'threads:$tag:$sort';
+  String _getThreadsKey(String? tag, String? sort) => 'threads:$tag:$sort';
 
   Future<void> _fetchAndAddFeed({
     String? tag,
@@ -110,7 +110,7 @@ class LightningApiClient {
     bool isThreads = false,
   }) async {
     final key =
-        isThreads ? _getThreadKey(tag, sort?.name) : _getKey(tag, sort?.name);
+        isThreads ? _getThreadsKey(tag, sort?.name) : _getKey(tag, sort?.name);
 
     assert(_feedStreamControllers.containsKey(key), 'Missing key $key');
 
@@ -232,7 +232,7 @@ class LightningApiClient {
     ThreadSortOrder? sort,
     bool requestLatest = false,
   }) {
-    final key = _getThreadKey(tag, sort?.name);
+    final key = _getThreadsKey(tag, sort?.name);
     final BehaviorSubject<Feed> controller;
     if (_feedStreamControllers.containsKey(key)) {
       controller = _feedStreamControllers[key]!;
@@ -255,15 +255,33 @@ class LightningApiClient {
     return controller.asBroadcastStream();
   }
 
+  /// Refresh the feed and add it to the stream
+  Future<void> refreshThreads({
+    String? tag,
+    FeedSortOrder? sort,
+  }) async {
+    final key = _getThreadsKey(tag, sort?.name);
+    if (!_feedStreamControllers.containsKey(key)) {
+      throw const NotFoundFailure('Threads not found');
+    }
+
+    unawaited(_fetchAndAddFeed(
+      tag: tag,
+      sort: sort,
+      requestLatest: true,
+      isThreads: true,
+    ));
+  }
+
   /// Expand the feed and add it to the stream
   Future<void> expandThreads({
-    required String tag,
-    required ThreadSortOrder sort,
+    String? tag,
+    ThreadSortOrder? sort,
     int amount = 20,
   }) async {
-    final key = _getThreadKey(tag, sort.name);
+    final key = _getThreadsKey(tag, sort?.name);
     if (!_feedStreamControllers.containsKey(key)) {
-      throw const NotFoundFailure('Thread not found');
+      throw const NotFoundFailure('Threads not found');
     }
 
     final curFeed = _feedStreamControllers[key]!.value;
