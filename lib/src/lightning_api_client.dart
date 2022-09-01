@@ -8,10 +8,28 @@ import 'package:rxdart/subjects.dart';
 
 enum FeedSortOrder { curated, created, trending, promoted, hot, blog, feed }
 
+extension FeedSortOrderExtension on FeedSortOrder {
+  ThreadsSortOrder? toThreadSortOrder() {
+    switch (this) {
+      case FeedSortOrder.created:
+        return ThreadsSortOrder.created;
+      case FeedSortOrder.trending:
+        return ThreadsSortOrder.trending;
+      // ignore: no_default_cases
+      default:
+        throw const IllegalSortException();
+    }
+  }
+}
+
+class IllegalSortException implements Exception {
+  const IllegalSortException();
+}
+
 enum ThreadsSortOrder { created, trending }
 
 extension ThreadsSortOrderExtension on ThreadsSortOrder {
-  FeedSortOrder? convertToFeedSortOrder() {
+  FeedSortOrder? toFeedSortOrder() {
     return this == ThreadsSortOrder.created
         ? FeedSortOrder.created
         : FeedSortOrder.trending;
@@ -251,7 +269,7 @@ class LightningApiClient {
       unawaited(
         _fetchAndAddFeed(
           tag: tag,
-          sort: sort?.convertToFeedSortOrder(),
+          sort: sort?.toFeedSortOrder(),
           requestLatest: requestLatest,
           isThreads: true,
         ),
@@ -271,12 +289,14 @@ class LightningApiClient {
       throw const NotFoundFailure('Threads not found');
     }
 
-    unawaited(_fetchAndAddFeed(
-      tag: tag,
-      sort: sort?.convertToFeedSortOrder(),
-      requestLatest: true,
-      isThreads: true,
-    ));
+    unawaited(
+      _fetchAndAddFeed(
+        tag: tag,
+        sort: sort?.toFeedSortOrder(),
+        requestLatest: true,
+        isThreads: true,
+      ),
+    );
   }
 
   /// Expand the feed and add it to the stream
@@ -295,7 +315,7 @@ class LightningApiClient {
     unawaited(
       _fetchAndAddFeed(
         tag: tag,
-        sort: sort?.convertToFeedSortOrder(),
+        sort: sort?.toFeedSortOrder(),
         start: 0, // FIXME Only get the items to expand
         // start: curFeed.length >= 2 ? curFeed.length - 2 : 0,
         limit: curFeed.length + amount,

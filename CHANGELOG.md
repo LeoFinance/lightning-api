@@ -117,3 +117,8 @@
 ## 0.11.4
 
 - Add convertToFeedSortOrder extension
+
+## 0.11.5
+
+- Rename toFeedSortOrder
+- Add toThreadSortOrder extension
