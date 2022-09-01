@@ -52,7 +52,7 @@ class LightningApiClient {
   Future<Account?> _fetchAccount(String name) async {
     final uri = Uri.https(
       _baseUrl,
-      '/lightning/accounts/$name',
+      '/accounts/$name',
     );
 
     final postResponse = await _httpGet(uri);
@@ -184,7 +184,7 @@ class LightningApiClient {
 
     final uri = Uri.https(
       _baseUrl,
-      '/lightning/feeds/$tag/${sort.name}',
+      '/feeds/$tag/${sort.name}',
       queryParameters.isNotEmpty ? queryParameters : null,
     );
     final postResponse = await _httpGet(uri);
@@ -239,7 +239,7 @@ class LightningApiClient {
   Future<Post?> _fetchPost(Authorperm id, {bool requestLatest = false}) async {
     final uri = Uri.https(
       _baseUrl,
-      '/lightning/content/$id',
+      '/content/$id',
       <String, dynamic>{'latest': requestLatest == true ? '1' : '0'},
     );
 
@@ -300,7 +300,7 @@ class LightningApiClient {
   }) async {
     final uri = Uri.https(
       _baseUrl,
-      '/lightning/comments/$id',
+      '/comments/$id',
       <String, dynamic>{'latest': requestLatest == true ? '1' : '0'},
     );
 
@@ -344,7 +344,7 @@ class LightningApiClient {
     if (limit != null) {
       params['limit'] = limit.toString();
     }
-    final uri = Uri.https(_baseUrl, '/lightning/search', params);
+    final uri = Uri.https(_baseUrl, '/search', params);
 
     final searchResult = await _httpGet(uri);
 
@@ -358,7 +358,7 @@ class LightningApiClient {
   }
 
   // Future<Excerpt> getExcerpt(id) async {
-  //   final uri = Uri.https(_baseUrl, '/lightning/excerpts/$id');
+  //   final uri = Uri.https(_baseUrl, '/excerpts/$id');
 
   //   final postResponse = await _httpClient.get(uri);
 
@@ -394,7 +394,7 @@ class LightningApiClient {
   //   final queryParameters = <String, String>{};
   //   if (start != null) queryParameters['start'] = start.toString();
   //   if (limit != null) queryParameters['limit'] = limit.toString();
-  //   final uri = Uri.https(_baseUrl, '/lightning/posts/$tag/$sort',
+  //   final uri = Uri.https(_baseUrl, '/posts/$tag/$sort',
   //       queryParameters.isNotEmpty ? queryParameters : null);
   //   final postResponse = await _httpClient.get(uri);
 
@@ -413,7 +413,7 @@ class LightningApiClient {
 
   // Future<List<dynamic>> getFeedJson(
   //     {required String tag, required String sort}) async {
-  //   final uri = Uri.https(_baseUrl, '/lightning/feeds/$tag/$sort');
+  //   final uri = Uri.https(_baseUrl, '/feeds/$tag/$sort');
   //   print('GET $uri');
   //   final postResponse = await _httpClient.get(uri);
 

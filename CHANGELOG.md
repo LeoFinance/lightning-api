@@ -91,3 +91,7 @@
 ## 0.10.0
 
 - Use https://lightning.leofinance.io
+
+## 0.10.1
+
+- Fix path on updated lightning server
