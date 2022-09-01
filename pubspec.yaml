@@ -1,6 +1,6 @@
 name: lightning_api
 description: Provices a Stream interface to the LeoFinance Lightning HTTP API.
-version: 0.11.5
+version: 0.11.7
 repository: https://github.com/LeoFinance/lightning-api
 
 environment:
@@ -12,6 +12,7 @@ dependencies:
   http: ^0.13.3
   intl: ^0.17.0
   json_annotation: ^4.5.0
+  logging: ^1.0.2
   rxdart: ^0.27.3
   scot_api: ^0.4.1
 

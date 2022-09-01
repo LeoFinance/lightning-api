@@ -3,13 +3,14 @@ import 'dart:convert';
 
 import 'package:http/http.dart' as http;
 import 'package:lightning_api/lightning_api.dart';
+import 'package:logging/logging.dart';
 import 'package:rxdart/streams.dart';
 import 'package:rxdart/subjects.dart';
 
 enum FeedSortOrder { curated, created, trending, promoted, hot, blog, feed }
 
 extension FeedSortOrderExtension on FeedSortOrder {
-  ThreadsSortOrder? toThreadSortOrder() {
+  ThreadsSortOrder toThreadsSortOrder() {
     switch (this) {
       case FeedSortOrder.created:
         return ThreadsSortOrder.created;
@@ -29,7 +30,7 @@ class IllegalSortException implements Exception {
 enum ThreadsSortOrder { created, trending }
 
 extension ThreadsSortOrderExtension on ThreadsSortOrder {
-  FeedSortOrder? toFeedSortOrder() {
+  FeedSortOrder toFeedSortOrder() {
     return this == ThreadsSortOrder.created
         ? FeedSortOrder.created
         : FeedSortOrder.trending;
@@ -40,8 +41,10 @@ class LightningApiClient {
   /// {@macro lightning_api_client}
   LightningApiClient({this.httpClient});
 
-  final http.Client? httpClient;
   static const _baseUrl = 'lightning.leofinance.io';
+
+  final http.Client? httpClient;
+  final log = Logger('LightningApiClient');
 
   final _accountStreamControllers = <String, BehaviorSubject<Account?>>{};
 
@@ -218,7 +221,7 @@ class LightningApiClient {
 
     if (isThreads) {
       if (tag != null) queryParameters['tag'] = tag;
-      if (sort != null) queryParameters['sort'] = tag.toString();
+      if (sort != null) queryParameters['sort'] = sort.name;
     }
 
     final uri = isThreads
@@ -248,6 +251,7 @@ class LightningApiClient {
   }
 
   Future<http.Response> _httpGet(Uri url, {Map<String, String>? headers}) {
+    log.info('HTTP GET $url');
     return httpClient != null
         ? httpClient!.get(url, headers: headers)
         : http.get(url, headers: headers);

@@ -122,3 +122,11 @@
 
 - Rename toFeedSortOrder
 - Add toThreadSortOrder extension
+
+## 0.11.6
+
+- Integrate logging
+
+## 0.11.7
+
+- Fix bug on thread sorting
