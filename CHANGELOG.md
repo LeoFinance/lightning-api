@@ -107,3 +107,9 @@
 ## 0.11.2
 
 - Forgot refreshThreads API call
+
+## 0.11.3
+
+- Rename ThreadSortOrder to ThreadsSortOrder
+- Fix wrong sort order if null passed
+- Fix incorrect type on refreshThreads

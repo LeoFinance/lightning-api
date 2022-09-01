@@ -8,7 +8,7 @@ import 'package:rxdart/subjects.dart';
 
 enum FeedSortOrder { curated, created, trending, promoted, hot, blog, feed }
 
-enum ThreadSortOrder { created, trending }
+enum ThreadsSortOrder { created, trending }
 
 class LightningApiClient {
   /// {@macro lightning_api_client}
@@ -229,7 +229,7 @@ class LightningApiClient {
 
   Stream<Feed> getThreads({
     String? tag,
-    ThreadSortOrder? sort,
+    ThreadsSortOrder? sort,
     bool requestLatest = false,
   }) {
     final key = _getThreadsKey(tag, sort?.name);
@@ -243,9 +243,7 @@ class LightningApiClient {
       unawaited(
         _fetchAndAddFeed(
           tag: tag,
-          sort: sort == ThreadSortOrder.created
-              ? FeedSortOrder.created
-              : FeedSortOrder.trending,
+          sort: _convertToFeedSortOrder(sort),
           requestLatest: requestLatest,
           isThreads: true,
         ),
@@ -255,10 +253,18 @@ class LightningApiClient {
     return controller.asBroadcastStream();
   }
 
+  FeedSortOrder? _convertToFeedSortOrder(ThreadsSortOrder? sort) {
+    return sort != null
+        ? sort == ThreadsSortOrder.created
+            ? FeedSortOrder.created
+            : FeedSortOrder.trending
+        : null;
+  }
+
   /// Refresh the feed and add it to the stream
   Future<void> refreshThreads({
     String? tag,
-    FeedSortOrder? sort,
+    ThreadsSortOrder? sort,
   }) async {
     final key = _getThreadsKey(tag, sort?.name);
     if (!_feedStreamControllers.containsKey(key)) {
@@ -267,7 +273,7 @@ class LightningApiClient {
 
     unawaited(_fetchAndAddFeed(
       tag: tag,
-      sort: sort,
+      sort: _convertToFeedSortOrder(sort),
       requestLatest: true,
       isThreads: true,
     ));
@@ -276,7 +282,7 @@ class LightningApiClient {
   /// Expand the feed and add it to the stream
   Future<void> expandThreads({
     String? tag,
-    ThreadSortOrder? sort,
+    ThreadsSortOrder? sort,
     int amount = 20,
   }) async {
     final key = _getThreadsKey(tag, sort?.name);
@@ -289,9 +295,7 @@ class LightningApiClient {
     unawaited(
       _fetchAndAddFeed(
         tag: tag,
-        sort: sort == ThreadSortOrder.created
-            ? FeedSortOrder.created
-            : FeedSortOrder.trending,
+        sort: _convertToFeedSortOrder(sort),
         start: 0, // FIXME Only get the items to expand
         // start: curFeed.length >= 2 ? curFeed.length - 2 : 0,
         limit: curFeed.length + amount,
