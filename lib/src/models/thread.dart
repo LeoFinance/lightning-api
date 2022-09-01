@@ -9,12 +9,14 @@ part 'thread.g.dart';
 @JsonSerializable(fieldRename: FieldRename.snake, explicitToJson: true)
 class Thread extends Equatable {
   const Thread({
+    required this.authorperm,
     required this.parent,
     this.replies = const [],
   });
 
   factory Thread.fromJson(Map<String, dynamic> json) => _$ThreadFromJson(json);
 
+  final Authorperm authorperm;
   final Comment parent;
 
   @JsonKey(
@@ -24,10 +26,12 @@ class Thread extends Equatable {
   final List<Authorperm> replies;
 
   Thread copyWith({
+    Authorperm? authorperm,
     Comment? parent,
     List<Authorperm>? replies,
   }) {
     return Thread(
+      authorperm: authorperm ?? this.authorperm,
       parent: parent ?? this.parent,
       replies: replies ?? this.replies,
     );
@@ -37,7 +41,7 @@ class Thread extends Equatable {
   bool get stringify => true;
 
   @override
-  List<Object?> get props => [parent, replies];
+  List<Object?> get props => [authorperm, parent, replies];
 
   Map<String, dynamic> toJson() => _$ThreadToJson(this);
 }

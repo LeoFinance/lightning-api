@@ -130,3 +130,7 @@
 ## 0.11.7
 
 - Fix bug on thread sorting
+
+## 0.11.8
+
+- Add Authorperm to Thread
