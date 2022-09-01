@@ -8,6 +8,8 @@ import 'package:rxdart/subjects.dart';
 
 enum FeedSortOrder { curated, created, trending, promoted, hot, blog, feed }
 
+enum ThreadSortOrder { created, trending }
+
 class LightningApiClient {
   /// {@macro lightning_api_client}
   LightningApiClient({this.httpClient});
@@ -19,6 +21,7 @@ class LightningApiClient {
 
   final _feedStreamControllers = <String, BehaviorSubject<Feed>>{};
   final _postStreamControllers = <Authorperm, BehaviorSubject<Post?>>{};
+  final _threadStreamControllers = <Authorperm, BehaviorSubject<Thread?>>{};
 
   final _commentsStreamControllers = <Authorperm, BehaviorSubject<Comments?>>{};
 
@@ -96,6 +99,7 @@ class LightningApiClient {
   }
 
   String _getKey(String tag, String sort) => '$tag:$sort';
+  String _getThreadKey(String tag, String sort) => 'thread:$tag:$sort';
 
   Future<void> _fetchAndAddFeed({
     required String tag,
@@ -103,8 +107,10 @@ class LightningApiClient {
     int? start,
     int? limit,
     bool requestLatest = false,
+    bool isThreads = false,
   }) async {
-    final key = _getKey(tag, sort.name);
+    final key =
+        isThreads ? _getThreadKey(tag, sort.name) : _getKey(tag, sort.name);
 
     assert(_feedStreamControllers.containsKey(key), 'Missing key $key');
 
@@ -116,6 +122,7 @@ class LightningApiClient {
           start: start,
           limit: limit,
           requestLatest: requestLatest,
+          isThreads: isThreads,
         ),
       );
     } catch (e, s) {
@@ -171,27 +178,39 @@ class LightningApiClient {
   }
 
   Future<Feed> _fetchFeed({
-    required String tag,
-    required FeedSortOrder sort,
+    String? tag,
+    FeedSortOrder? sort,
     int? start,
     int? limit,
     bool requestLatest = false,
+    bool isThreads = false,
   }) async {
     final queryParameters = <String, String>{};
     if (start != null) queryParameters['start'] = start.toString();
     if (limit != null) queryParameters['limit'] = limit.toString();
     if (requestLatest) queryParameters['latest'] = '1';
 
-    final uri = Uri.https(
-      _baseUrl,
-      '/feeds/$tag/${sort.name}',
-      queryParameters.isNotEmpty ? queryParameters : null,
-    );
+    if (isThreads) {
+      if (tag != null) queryParameters['tag'] = tag;
+      if (sort != null) queryParameters['sort'] = tag.toString();
+    }
+
+    final uri = isThreads
+        ? Uri.https(
+            _baseUrl,
+            '/v2/threads',
+            queryParameters.isNotEmpty ? queryParameters : null,
+          )
+        : Uri.https(
+            _baseUrl,
+            '/feeds/$tag/${sort!.name}',
+            queryParameters.isNotEmpty ? queryParameters : null,
+          );
     final postResponse = await _httpGet(uri);
 
     if (postResponse.statusCode != 200) {
       if (postResponse.statusCode == 404) {
-        throw NotFoundFailure('Could not find feed $tag/${sort.name}');
+        throw NotFoundFailure('Could not find feed $tag/${sort?.name}');
       } else {
         throw ContentRequestFailure(statusCode: postResponse.statusCode);
       }
@@ -206,6 +225,71 @@ class LightningApiClient {
     return httpClient != null
         ? httpClient!.get(url, headers: headers)
         : http.get(url, headers: headers);
+  }
+
+  Stream<Feed> getThreads({
+    required String tag,
+    required ThreadSortOrder sort,
+    bool requestLatest = false,
+  }) {
+    final key = _getThreadKey(tag, sort.name);
+    final BehaviorSubject<Feed> controller;
+    if (_feedStreamControllers.containsKey(key)) {
+      controller = _feedStreamControllers[key]!;
+    } else {
+      controller = BehaviorSubject<Feed>();
+      _feedStreamControllers[key] = controller;
+
+      unawaited(
+        _fetchAndAddFeed(
+          tag: tag,
+          sort: sort == ThreadSortOrder.created
+              ? FeedSortOrder.created
+              : FeedSortOrder.trending,
+          requestLatest: requestLatest,
+          isThreads: true,
+        ),
+      );
+    }
+
+    return controller.asBroadcastStream();
+  }
+
+  /// Expand the feed and add it to the stream
+  Future<void> expandThreads({
+    required String tag,
+    required ThreadSortOrder sort,
+    int amount = 20,
+  }) async {
+    final key = _getThreadKey(tag, sort.name);
+    if (!_feedStreamControllers.containsKey(key)) {
+      throw const NotFoundFailure('Thread not found');
+    }
+
+    final curFeed = _feedStreamControllers[key]!.value;
+
+    unawaited(
+      _fetchAndAddFeed(
+        tag: tag,
+        sort: sort == ThreadSortOrder.created
+            ? FeedSortOrder.created
+            : FeedSortOrder.trending,
+        start: 0, // FIXME Only get the items to expand
+        // start: curFeed.length >= 2 ? curFeed.length - 2 : 0,
+        limit: curFeed.length + amount,
+        isThreads: true,
+      ),
+    );
+
+    // var lastDuplicate = feed.posts.indexOf(newFeed[0]);
+    // if (lastDuplicate == -1) {
+    //   // FIXME We will miss some items if this happens; not a big deal IMHO
+    //   lastDuplicate = feed.length;
+    // }
+    // final expandedFeed = Feed(
+    //     tag: feedData.tag,
+    //     sort: feedData.sort.name,
+    //     posts: [...feed.posts.getRange(0, lastDuplicate), ...newFeed.posts]);
   }
 
   ValueStream<Post?> getPost(Authorperm id) {
@@ -243,17 +327,17 @@ class LightningApiClient {
       <String, dynamic>{'latest': requestLatest == true ? '1' : '0'},
     );
 
-    final postResponse = await _httpGet(uri);
+    final response = await _httpGet(uri);
 
-    if (postResponse.statusCode != 200) {
-      if (postResponse.statusCode == 404) {
+    if (response.statusCode != 200) {
+      if (response.statusCode == 404) {
         return null;
       } else {
-        throw ContentRequestFailure(statusCode: postResponse.statusCode);
+        throw ContentRequestFailure(statusCode: response.statusCode);
       }
     }
 
-    final bodyJson = jsonDecode(postResponse.body) as Map<String, dynamic>;
+    final bodyJson = jsonDecode(response.body) as Map<String, dynamic>;
 
     return Post.fromJson(bodyJson);
   }
@@ -304,17 +388,17 @@ class LightningApiClient {
       <String, dynamic>{'latest': requestLatest == true ? '1' : '0'},
     );
 
-    final postResponse = await _httpGet(uri);
+    final response = await _httpGet(uri);
 
-    if (postResponse.statusCode != 200) {
-      if (postResponse.statusCode == 404) {
+    if (response.statusCode != 200) {
+      if (response.statusCode == 404) {
         return null;
       } else {
-        throw ContentRequestFailure(statusCode: postResponse.statusCode);
+        throw ContentRequestFailure(statusCode: response.statusCode);
       }
     }
 
-    final bodyJson = jsonDecode(postResponse.body) as Map<String, dynamic>;
+    final bodyJson = jsonDecode(response.body) as Map<String, dynamic>;
 
     return Comments.fromJson(bodyJson);
   }
@@ -326,6 +410,112 @@ class LightningApiClient {
     }
 
     unawaited(_fetchAndAddComments(id, requestLatest: true));
+  }
+
+  ValueStream<Thread?> getThread(Authorperm id) {
+    final BehaviorSubject<Thread?> controller;
+    if (_postStreamControllers.containsKey(id)) {
+      controller = _threadStreamControllers[id]!;
+    } else {
+      controller = BehaviorSubject<Thread?>();
+      _threadStreamControllers[id] = controller;
+
+      unawaited(_fetchAndAddThread(id));
+    }
+
+    return controller;
+  }
+
+  Future<void> _fetchAndAddThread(
+    Authorperm id, {
+    bool requestLatest = false,
+  }) async {
+    assert(
+        _threadStreamControllers.containsKey(id), 'Missing thread stream $id');
+
+    try {
+      _threadStreamControllers[id]!
+          .add(await _fetchThread(id, requestLatest: requestLatest));
+    } catch (e, s) {
+      _threadStreamControllers[id]!.addError(e, s);
+    }
+  }
+
+  Future<Thread?> _fetchThread(
+    Authorperm id, {
+    bool requestLatest = false,
+  }) async {
+    final uri = Uri.https(
+      _baseUrl,
+      '/v2/threads/$id',
+      <String, dynamic>{'latest': requestLatest == true ? '1' : '0'},
+    );
+
+    final response = await _httpGet(uri);
+
+    if (response.statusCode != 200) {
+      if (response.statusCode == 404) {
+        return null;
+      } else {
+        throw ContentRequestFailure(statusCode: response.statusCode);
+      }
+    }
+
+    final bodyJson = jsonDecode(response.body) as Map<String, dynamic>;
+
+    return Thread.fromJson(bodyJson);
+  }
+
+  /// Refresh the thread and add it to the stream
+  Future<void> refreshThread(Authorperm id) async {
+    return _fetchAndAddThread(id, requestLatest: true);
+  }
+
+  Future<Map<String, int>?> getThreadTags({bool requestLatest = false}) async {
+    final uri = Uri.https(
+      _baseUrl,
+      '/v2/threads/tags',
+      <String, dynamic>{'latest': requestLatest == true ? '1' : '0'},
+    );
+
+    final response = await _httpGet(uri);
+
+    if (response.statusCode != 200) {
+      if (response.statusCode == 404) {
+        return null;
+      } else {
+        throw ContentRequestFailure(statusCode: response.statusCode);
+      }
+    }
+
+    final bodyJson = jsonDecode(response.body) as Map<String, dynamic>;
+
+    return Map<String, int>.from(bodyJson);
+  }
+
+  Future<Map<String, dynamic>?> getMetadata(
+    String url, {
+    bool requestLatest = false,
+  }) async {
+    final uri = Uri.https(
+      _baseUrl,
+      '/v2/metadata',
+      <String, dynamic>{'u': url, 'latest': requestLatest == true ? '1' : '0'},
+    );
+
+    final response = await _httpGet(uri);
+
+    if (response.statusCode != 200) {
+      if (response.statusCode == 404) {
+        return null;
+      } else {
+        throw ContentRequestFailure(statusCode: response.statusCode);
+      }
+    }
+
+    final bodyJson = jsonDecode(response.body) as Map<String, dynamic>;
+
+    return bodyJson;
   }
 
   // /// Find and return the id of the post which contains the given comment.

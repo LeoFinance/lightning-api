@@ -95,3 +95,7 @@
 ## 0.10.1
 
 - Fix path on updated lightning server
+
+## 0.11.0
+
+- Add Threads APIs
