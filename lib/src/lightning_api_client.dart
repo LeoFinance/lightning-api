@@ -13,7 +13,7 @@ class LightningApiClient {
   LightningApiClient({this.httpClient});
 
   final http.Client? httpClient;
-  static const _baseUrl = 'beta.leofinance.io';
+  static const _baseUrl = 'lightning.leofinance.io';
 
   final _accountStreamControllers = <String, BehaviorSubject<Account?>>{};
 

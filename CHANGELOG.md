@@ -87,3 +87,7 @@
 ## 0.9.0
 
 - Thread must contain the actual content
+
+## 0.10.0
+
+- Use https://lightning.leofinance.io
