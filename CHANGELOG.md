@@ -99,3 +99,7 @@
 ## 0.11.0
 
 - Add Threads APIs
+
+## 0.11.1
+
+- Fix getThreads params should be optional

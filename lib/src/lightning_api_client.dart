@@ -98,19 +98,19 @@ class LightningApiClient {
     return controller.asBroadcastStream();
   }
 
-  String _getKey(String tag, String sort) => '$tag:$sort';
-  String _getThreadKey(String tag, String sort) => 'thread:$tag:$sort';
+  String _getKey(String? tag, String? sort) => '$tag:$sort';
+  String _getThreadKey(String? tag, String? sort) => 'threads:$tag:$sort';
 
   Future<void> _fetchAndAddFeed({
-    required String tag,
-    required FeedSortOrder sort,
+    String? tag,
+    FeedSortOrder? sort,
     int? start,
     int? limit,
     bool requestLatest = false,
     bool isThreads = false,
   }) async {
     final key =
-        isThreads ? _getThreadKey(tag, sort.name) : _getKey(tag, sort.name);
+        isThreads ? _getThreadKey(tag, sort?.name) : _getKey(tag, sort?.name);
 
     assert(_feedStreamControllers.containsKey(key), 'Missing key $key');
 
@@ -228,11 +228,11 @@ class LightningApiClient {
   }
 
   Stream<Feed> getThreads({
-    required String tag,
-    required ThreadSortOrder sort,
+    String? tag,
+    ThreadSortOrder? sort,
     bool requestLatest = false,
   }) {
-    final key = _getThreadKey(tag, sort.name);
+    final key = _getThreadKey(tag, sort?.name);
     final BehaviorSubject<Feed> controller;
     if (_feedStreamControllers.containsKey(key)) {
       controller = _feedStreamControllers[key]!;
@@ -431,7 +431,9 @@ class LightningApiClient {
     bool requestLatest = false,
   }) async {
     assert(
-        _threadStreamControllers.containsKey(id), 'Missing thread stream $id');
+      _threadStreamControllers.containsKey(id),
+      'Missing thread stream $id',
+    );
 
     try {
       _threadStreamControllers[id]!
