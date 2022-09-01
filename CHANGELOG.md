@@ -134,3 +134,7 @@
 ## 0.11.8
 
 - Add Authorperm to Thread
+
+## 0.11.9
+
+- Regenerate files
