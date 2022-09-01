@@ -10,6 +10,14 @@ enum FeedSortOrder { curated, created, trending, promoted, hot, blog, feed }
 
 enum ThreadsSortOrder { created, trending }
 
+extension ThreadsSortOrderExtension on ThreadsSortOrder {
+  FeedSortOrder? convertToFeedSortOrder() {
+    return this == ThreadsSortOrder.created
+        ? FeedSortOrder.created
+        : FeedSortOrder.trending;
+  }
+}
+
 class LightningApiClient {
   /// {@macro lightning_api_client}
   LightningApiClient({this.httpClient});
@@ -243,7 +251,7 @@ class LightningApiClient {
       unawaited(
         _fetchAndAddFeed(
           tag: tag,
-          sort: _convertToFeedSortOrder(sort),
+          sort: sort?.convertToFeedSortOrder(),
           requestLatest: requestLatest,
           isThreads: true,
         ),
@@ -251,14 +259,6 @@ class LightningApiClient {
     }
 
     return controller.asBroadcastStream();
-  }
-
-  FeedSortOrder? _convertToFeedSortOrder(ThreadsSortOrder? sort) {
-    return sort != null
-        ? sort == ThreadsSortOrder.created
-            ? FeedSortOrder.created
-            : FeedSortOrder.trending
-        : null;
   }
 
   /// Refresh the feed and add it to the stream
@@ -273,7 +273,7 @@ class LightningApiClient {
 
     unawaited(_fetchAndAddFeed(
       tag: tag,
-      sort: _convertToFeedSortOrder(sort),
+      sort: sort?.convertToFeedSortOrder(),
       requestLatest: true,
       isThreads: true,
     ));
@@ -295,7 +295,7 @@ class LightningApiClient {
     unawaited(
       _fetchAndAddFeed(
         tag: tag,
-        sort: _convertToFeedSortOrder(sort),
+        sort: sort?.convertToFeedSortOrder(),
         start: 0, // FIXME Only get the items to expand
         // start: curFeed.length >= 2 ? curFeed.length - 2 : 0,
         limit: curFeed.length + amount,

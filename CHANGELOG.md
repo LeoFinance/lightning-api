@@ -113,3 +113,7 @@
 - Rename ThreadSortOrder to ThreadsSortOrder
 - Fix wrong sort order if null passed
 - Fix incorrect type on refreshThreads
+
+## 0.11.4
+
+- Add convertToFeedSortOrder extension
