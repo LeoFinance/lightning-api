@@ -166,7 +166,7 @@ class LightningApiClient {
   }) async {
     final key = _getKey(tag, sort.name);
     if (!_feedStreamControllers.containsKey(key)) {
-      throw const NotFoundFailure('Feed not found');
+      throw NotFoundFailure('Feed $key not found');
     }
 
     unawaited(_fetchAndAddFeed(tag: tag, sort: sort, requestLatest: true));
@@ -180,7 +180,7 @@ class LightningApiClient {
   }) async {
     final key = _getKey(tag, sort.name);
     if (!_feedStreamControllers.containsKey(key)) {
-      throw const NotFoundFailure('Feed not found');
+      throw NotFoundFailure('Feed $key not found');
     }
 
     final curFeed = _feedStreamControllers[key]!.value;
@@ -290,7 +290,7 @@ class LightningApiClient {
   }) async {
     final key = _getThreadsKey(tag, sort?.name);
     if (!_feedStreamControllers.containsKey(key)) {
-      throw const NotFoundFailure('Threads not found');
+      throw NotFoundFailure('Threads $key not found');
     }
 
     unawaited(
@@ -311,7 +311,7 @@ class LightningApiClient {
   }) async {
     final key = _getThreadsKey(tag, sort?.name);
     if (!_feedStreamControllers.containsKey(key)) {
-      throw const NotFoundFailure('Threads not found');
+      throw NotFoundFailure('Threads $key not found');
     }
 
     final curFeed = _feedStreamControllers[key]!.value;
@@ -452,7 +452,7 @@ class LightningApiClient {
   /// Refresh the comments and add it to the stream
   Future<void> refreshComments(Authorperm id) async {
     if (!_commentsStreamControllers.containsKey(id)) {
-      throw const NotFoundFailure('Comments not found');
+      throw NotFoundFailure('Comments $id not found');
     }
 
     unawaited(_fetchAndAddComments(id, requestLatest: true));

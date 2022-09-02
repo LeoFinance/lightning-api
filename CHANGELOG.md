@@ -138,3 +138,7 @@
 ## 0.11.9
 
 - Regenerate files
+
+## 0.11.10
+
+- Improve logging
