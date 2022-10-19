@@ -1,6 +1,6 @@
 import 'package:equatable/equatable.dart';
 import 'package:json_annotation/json_annotation.dart';
-import 'package:leofinance_lightning_api/src/models/models.dart';
+import 'package:lightning_api/src/models/models.dart';
 
 part 'community_posts.g.dart';
 

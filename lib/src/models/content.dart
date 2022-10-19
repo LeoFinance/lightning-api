@@ -1,4 +1,4 @@
-import 'package:leofinance_lightning_api/lightning_api.dart';
+import 'package:lightning_api/lightning_api.dart';
 
 abstract class Content {
   const Content({
