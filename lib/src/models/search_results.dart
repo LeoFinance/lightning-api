@@ -1,6 +1,6 @@
 import 'package:equatable/equatable.dart';
 import 'package:json_annotation/json_annotation.dart';
-import 'package:lightning_api/lightning_api.dart';
+import 'package:leofinance_lightning_api/lightning_api.dart';
 
 part 'search_results.g.dart';
 

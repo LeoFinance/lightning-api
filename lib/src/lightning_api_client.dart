@@ -2,7 +2,7 @@ import 'dart:async';
 import 'dart:convert';
 
 import 'package:http/http.dart' as http;
-import 'package:lightning_api/lightning_api.dart';
+import 'package:leofinance_lightning_api/lightning_api.dart';
 import 'package:logging/logging.dart';
 import 'package:rxdart/streams.dart';
 import 'package:rxdart/subjects.dart';

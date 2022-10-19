@@ -1,6 +1,6 @@
 import 'dart:convert';
 import 'dart:io';
-import 'package:lightning_api/lightning_api.dart';
+import 'package:leofinance_lightning_api/lightning_api.dart';
 import 'package:test/test.dart';
 
 void main() {

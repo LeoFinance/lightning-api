@@ -3,7 +3,7 @@ import 'dart:convert';
 
 import 'package:faker/faker.dart';
 import 'package:http/http.dart' as http;
-import 'package:lightning_api/lightning_api.dart';
+import 'package:leofinance_lightning_api/lightning_api.dart';
 import 'package:mockito/annotations.dart';
 import 'package:mockito/mockito.dart';
 import 'package:test/test.dart';
