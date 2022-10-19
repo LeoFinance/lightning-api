@@ -1,4 +1,4 @@
-export 'package:hive_api/hive_api.dart'
+export 'package:leofinance_hive_api/hive_api.dart'
     show
         PostStats,
         ProfileStats,

@@ -10,7 +10,7 @@ import 'package:http/http.dart' as _i7;
 import 'package:http/src/base_request.dart' as _i11;
 import 'package:http/src/response.dart' as _i2;
 import 'package:http/src/streamed_response.dart' as _i3;
-import 'package:lightning_api/lightning_api.dart' as _i6;
+import 'package:leofinance_lightning_api/lightning_api.dart' as _i6;
 import 'package:logging/logging.dart' as _i4;
 import 'package:mockito/mockito.dart' as _i1;
 import 'package:rxdart/streams.dart' as _i5;

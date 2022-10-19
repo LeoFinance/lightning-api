@@ -1,5 +1,5 @@
 import 'package:json_annotation/json_annotation.dart';
-import 'package:lightning_api/src/models/models.dart';
+import 'package:leofinance_lightning_api/src/models/models.dart';
 
 part 'post.g.dart';
 
